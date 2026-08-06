@@ -19,9 +19,13 @@ text files diff and version-control naturally, and anyone can fork and modify.
 - `parts/` — one file per part, each exposing a `make_<part>()` that returns a
   CadQuery `Workplane`. Each part builds **independently** (the spec wants every
   interface independently iterable).
-  - `cup.py` — real first-pass geometry
-  - `baffle.py` — real first-pass geometry (flat; print this first)
-  - `yoke.py`, `slider.py` — **stubs**: parameters wired, real geometry TODO
+  - `cup.py` — rebuilt at 54 mm (2026-08-06); see DESIGN-LOG
+  - `baffle.py` — real geometry, but **still on Daily Driver's Ø91.44 numbers**
+    (`baffle_outer_diameter` 77.0 against a LOCKED Ø54 plate). Next part to rebuild.
+  - `yoke.py`, `slider.py` — real geometry, NOT stubs (a v0.4 lofted-arm fork and a
+    v0.9 Beyerdynamic-style lozenge clamp respectively). The "stub" description was
+    inherited from an outdated Daily Driver doc and would have had someone re-solving
+    finished work.
   - `features.py` — **reusable mechanical primitives** (screw boss, post,
     fillet, thread, snap): established convention, **authored once and reused —
     never regenerated per part**, never re-derived by hand each time. Currently
@@ -70,9 +74,15 @@ python build.py
 
 ## Current state
 
-`cup` and `baffle` produce valid first-pass solids. `yoke` and `slider` are
-stubs. Nothing has been print-verified yet. Immediate next step is to build,
-visually sanity-check proportions, then print the baffle against a real driver.
+Forked from Daily Driver 2026-08-06. All 17 parts build. The cup has been rebuilt
+against the LOCKED 54/48/42 profile; the gate is at **1 HARD failure**, on the
+inactive closed-back variant (see DESIGN-LOG for the three ways out).
+
+**The standing hazard in this repo is inherited absolutes.** Daily Driver was a
+Ø91.44 cup; only eight parameter values changed at the fork. Any hardcoded radius
+you meet is suspect until it has been rebuilt at 54 — and note that a gate check
+written at the old scale can read GREEN on geometry that is nowhere near the part.
+`baffle.py` is the next part due this treatment.
 
 ## Distribution
 
