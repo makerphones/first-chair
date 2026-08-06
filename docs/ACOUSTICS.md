@@ -8,14 +8,14 @@ open-area, exact volume target) is measurement-gated — these are the parametri
 
 | Cavity | Volume | Set by |
 |---|---|---|
-| Rear (cup interior) | **38 cc** | ⌀42 mm × 28 mm deep |
+| Rear (cup interior) | **30 cc** | ⌀42 mm × 28 mm deep |
 | Front (ear ↔ baffle) | **68 cc** | pad opening ⌀60 mm × 24 mm pad depth |
-| **Total** | **106 cc** | |
+| **Total** | **98 cc** | |
 
 ## Tuning controls (all parametric)
 
 - **Back:** OPEN rear grille (`cup_open_back`) — closed-back is a regenerate, not a redesign.
 - **Rear vents (closed-back):** 6 × ⌀6 mm ports, each pluggable (`vent_plug`) — plug N to dial openness.
-- **Rear damping:** ⌀38 × 3 mm felt disc, seated in the cup's damping ring over the grille.
+- **Rear damping:** ⌀30 × 3 mm felt disc, seated in the cup's damping ring over the grille.
 - **Front seal:** 1.5 mm foam gasket at ~33% squeeze (gate-checked into 30–50%).
 - **Front cavity = pad depth** (24 mm) — the main tuning lever (swap pads).

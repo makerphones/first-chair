@@ -93,7 +93,13 @@ def _grille_open_fraction(cup_wp, n=400):
         cls.Perform(gp_Pnt(x, y, z), 1e-7)
         return cls.State() in (TopAbs_IN, TopAbs_ON)
 
-    zone_r = P.grille_outer_ring_radius + P.grille_outer_ring_width / 2
+    # Measure over the GRILLE ZONE, not the logo's outer edge. These used to be the same
+    # radius — the logo filled the zone — so `outer_ring_radius + width/2` was a correct way
+    # to say "the zone". Now that the mark is scaled inside the zone (grille_logo_zone_fraction)
+    # they have diverged, and the old expression measured only the inner disc, silently
+    # excluding the lattice-only annulus outside the logo (~44 % of the zone, and the most
+    # open part of it). Ask params for the zone.
+    zone_r = P.grille_zone_radius
     zmid = P.cup_back_thickness / 2
     step = 2 * zone_r / n
     mat = tot = 0
@@ -209,7 +215,11 @@ def main():
            f"open {of:.3f} in [{OPEN_MIN}, {OPEN_MAX}] (target {P.grille_target_open_fraction})")
 
     # 5. Pivot boss stands proud of the cup wall (boss + insert + arm room).
-    proud = P.pivot_boss_outer_radius - P.cup_outer_diameter / 2
+    #    Measured against the BODY, which is the wall the boss actually sits on — not the
+    #    Ø54 front plate. This check read 22.0 mm and PASSED on the fork while the two
+    #    bosses were floating 16 mm clear of the cup entirely: a boss attached to nothing
+    #    is maximally proud. A check written at one scale can read as confirmation at another.
+    proud = P.pivot_boss_outer_radius - P.cup_body_diameter / 2
     r.hard(proud >= MIN_PIVOT_PROUD, "pivot-clearance",
            f"boss proud {proud:.1f} mm >= {MIN_PIVOT_PROUD} mm")
 

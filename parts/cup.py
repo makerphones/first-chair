@@ -22,23 +22,37 @@ from params import P
 
 
 def make_cup() -> cq.Workplane:
-    od = P.cup_outer_diameter
-    total_h = P.cup_total_height
+    # THE CUP IS THE Ø48 BODY, NOT THE Ø54 PLATE. This distinction is the whole profile:
+    # cup_outer_diameter (54.0) is the front PLATE / pad-mount rim, and cup_body_diameter
+    # (48.0) is the shell behind it that the pad actually grips. Building the shell at 54
+    # — as this file did on the fork, because on Daily Driver the cup's OD *was* its body —
+    # gave a 6 mm wall while params.cup_wall_thickness correctly reported the real 3.0, and
+    # deleted the step the pad hooks behind. Same inherited-semantics failure as the wall
+    # number itself, one level down in the geometry.
+    body_d = P.cup_body_diameter
+    body_h = P.cup_body_height          # everything below the overhanging front lip
+    total_h = P.cup_total_height        # = cup_depth, LOCKED 27.6, lip included
 
-    # 1. Solid blank — the front (+Z) stays a CYLINDER (pad seat + void + pivot bosses); the rear
-    #    cup_dome_height flows into a CONVEX DOMED back (DT880/Denon family) that bulges from the OD at
-    #    the dome top inward to a FLAT grille face of cup_back_face_radius at z=0 (the grille / closed-back
-    #    ports sit on that flat). Lofted stacked circles — a sin profile so the dome meets the cylinder
-    #    tangent-vertical (smooth) and bulges convex below. Replaces the old cylinder + single roundover.
+    # 1. Solid blank — the front (+Z) stays a CYLINDER (pad grip + void + pivot bosses); the rear
+    #    cup_dome_height flows into a CONVEX DOMED back (DT880/Denon family) that bulges from the body
+    #    OD at the dome top inward to a FLAT grille face of cup_back_face_radius at z=0 (the grille /
+    #    closed-back ports sit on that flat). Lofted stacked circles — a sin profile so the dome meets
+    #    the cylinder tangent-vertical (smooth) and bulges convex below.
+    #
+    #    The dome is now capped at cup_back_thickness (derived), so it lives entirely inside the solid
+    #    back band and the wall above the void floor is a clean 3.0 mm cylinder. At the inherited
+    #    12.0 the taper ran 6 mm past the floor and thinned that wall; and with the inherited
+    #    cup_back_face_radius of 35.0 — larger than this cup's body radius — the loft ran the wrong
+    #    way entirely and flared the back out to Ø70.
     dome_h = P.cup_dome_height
     r_back = P.cup_back_face_radius
     nseg = 16                                          # dense sampling → smooth dome under a RULED loft
     wires = []
     for i in range(nseg + 1):
         t = i / nseg
-        r = r_back + (od / 2 - r_back) * math.sin(t * math.pi / 2)   # convex; vertical tangent at the top
+        r = r_back + (body_d / 2 - r_back) * math.sin(t * math.pi / 2)  # convex; vertical tangent at the top
         wires.append(cq.Wire.makeCircle(r, cq.Vector(0, 0, dome_h * t), cq.Vector(0, 0, 1)))
-    wires.append(cq.Wire.makeCircle(od / 2, cq.Vector(0, 0, total_h), cq.Vector(0, 0, 1)))   # cylinder to the front
+    wires.append(cq.Wire.makeCircle(body_d / 2, cq.Vector(0, 0, body_h), cq.Vector(0, 0, 1)))  # cylinder to the lip
     # RULED (straight between sections) — a smooth/spline loft overshoots and bulges the dome way out.
     cup = cq.Workplane(obj=cq.Solid.makeLoft(wires, ruled=True))
 
@@ -52,6 +66,8 @@ def make_cup() -> cq.Workplane:
         .circle(void_r).extrude(total_h)          # up through the open front (and beyond)
     )
     cup = cup.cut(void)
+    body_r = body_d / 2
+    body_cyl = cq.Workplane("XY").circle(body_r).extrude(body_h)   # clip stock for the bosses (step 4)
 
     # 2b. Soften the back-FACE edge: a small round where the convex dome meets the flat grille face
     #     (the dome itself does the main rounding now). Done HERE while the bottom is still a clean disc —
@@ -67,7 +83,12 @@ def make_cup() -> cq.Workplane:
     #    gaps open to the driver. Cut BEFORE the bosses so nothing slices a boss.
     r_out = P.grille_outer_ring_radius
     hub_r = P.grille_hub_diameter / 2
-    zone_r = r_out + P.grille_outer_ring_width / 2  # outer edge of the outer ring = zone
+    # The zone is the GRILLE ZONE — derived from the void (see params) — not the logo's outer
+    # edge. This read `r_out + outer_ring_width/2`, which was a correct way to say "the zone"
+    # only while the mark filled it. With the mark scaled inside the zone the two diverge, and
+    # the old expression cut a hole the size of the LOGO and left everything out to the wall
+    # solid: a 6 mm-thick back plate with a small badge punched in it, measuring 0.075 open.
+    zone_r = P.grille_zone_radius
 
     z0 = -1.0
     cut_h = P.cup_back_thickness + 2.0          # pierce the full (thicker) back band
@@ -142,12 +163,22 @@ def make_cup() -> cq.Workplane:
         )
         for i in range(P.baffle_screw_count)
     ]
+    #
+    #    REBUILT AT 54: the bolt circle now derives (baffle_screw_radius = body_r − boss_r), which
+    #    puts the boss's outer edge flush with the body OD — the furthest out it can sit without
+    #    standing proud of the shell, and the deepest bite it can take into the 3 mm wall. At the
+    #    inherited bcd of 70.0 the circle sat at r35 on a body of radius 24: four columns in open
+    #    air. The consequence of moving it inboard is that there is no room left to flare OUTWARD,
+    #    so boss and flare are CLIPPED to the body cylinder and the buttress material goes inboard
+    #    into the void, where there is room for it.
     fz, bh = P.baffle_boss_floor_z, P.baffle_boss_height
     for bx, by in boss_points:
         col = (cq.Workplane("XY").workplane(offset=fz).center(bx, by)
                .circle(P.baffle_boss_diameter / 2).extrude(bh))
         flare = (cq.Workplane("XY").workplane(offset=fz).center(bx, by)
                  .circle(P.baffle_boss_flare_diameter / 2).extrude(P.baffle_boss_flare_height))
+        if P.baffle_boss_clip_to_body:
+            col, flare = col.intersect(body_cyl), flare.intersect(body_cyl)
         cup = cup.union(col).union(flare)
     for bx, by in boss_points:  # bores last (round-before-cut)
         bore = (cq.Workplane("XY").workplane(offset=fz + bh).center(bx, by)
@@ -157,11 +188,16 @@ def make_cup() -> cq.Workplane:
     # 5. Yoke pivot bosses — two external bosses at 0/180 on the cup side walls,
     #    at mid-height, each a radial cylinder spanning the wall to an outer seat so
     #    it fully houses an M3 heat-set insert bored from the outside. The fork's
-    #    shoulder screw threads into it. With the pad-driven 90 mm cup the wall is
-    #    6 mm, so the boss (span 9) is ~4 mm proud and its inner end now stops IN the
-    #    wall — no lug into the cavity (the old thin-wall lug is gone).
-    r_out_boss = P.pivot_boss_outer_radius              # 49 (yoke_pivot_centres/2)
-    r_in_boss = r_out_boss - P.pivot_boss_through_span  # 40 — inside the 6 mm wall
+    #    shoulder screw threads into it.
+    #
+    #    THIS IS THE PAIR THAT FAILED THE MANIFOLD GATE. yoke_pivot_centres was still Daily
+    #    Driver's 98.0, so these two were built spanning r40→49 on a cup of body radius 24 —
+    #    two cylinders floating 16 mm clear of the shell, which gate.py reported as
+    #    "cup: 3 solid(s)". Both the centres and the span now derive from the body, so the
+    #    boss reaches from the void wall (r21) out to pivot_boss_proud clear of the OD, with
+    #    its inner end stopping flush IN the 3.0 wall — no lug into the cavity.
+    r_out_boss = P.pivot_boss_outer_radius              # body_r + proud
+    r_in_boss = r_out_boss - P.pivot_boss_through_span  # = void radius — flush in the wall
     span = P.pivot_boss_through_span
     zc = P.pivot_boss_z
     for sign in (+1, -1):
@@ -188,34 +224,42 @@ def make_cup() -> cq.Workplane:
     #    step 2b (the form pass "set the outer profile"), so the old no-op outer-
     #    wall fillet — which only ever warned on the bare cylinder — is retired.
 
-    # 7. Earpad RETAINING FLANGE (DT770-style) — a thin brim at the cup's front
-    #    OUTER edge that extends the perimeter OUTWARD (radially), so the earpad's
-    #    skirt wraps over it and hooks BEHIND it. It sticks OUT toward the perimeter,
-    #    NOT up toward the head, so the baffle stays flush (not recessed). The brim
-    #    sits at the front edge (top flush with the rim); below it the wall steps
-    #    back in, giving the pad skirt an undercut to grip. The brim edges are
-    #    ROUNDED (soft-form) so it eases the pad over and feels good in the hand —
-    #    done on the clean disc before the union (OCC won't fillet it after).
-    flange_ir = od / 2 - 1.0                          # overlap the wall → solid union
-    flange_or = od / 2 + P.pad_lip_extension          # brim sticks OUT to here
-    flange = (
+    # 7. Front LIP — the Ø54 rim that overhangs the Ø48 body, and the reason the pad stays on.
+    #    Retention is AXIAL: the foam stretches over this rim and cannot climb back over it, then
+    #    grips the body behind it by friction alone (it still rotates freely — that is locating,
+    #    not clamping). So the STEP is the retention feature and lip DEPTH matters more than rim
+    #    diameter precision.
+    #
+    #    OPEN QUESTION, FLAGGED NOT DECIDED — whether this rim is printed on the CUP (here) or on
+    #    the BAFFLE. The brief reads it as the baffle plate overhanging the body, and params says
+    #    as much at pad_lip_extension ("there is no separate retaining brim"). It is kept on the
+    #    cup for now because the functional result is identical (a Ø54 rim, 3.0 deep, over a Ø48
+    #    body), because gate.py's pad-flange checks are written against the cup, and because the
+    #    baffle is explicitly the part the builder iterates on — you do not want pad retention to
+    #    change every time someone reprints a baffle. Maker's call; it is a one-block move.
+    #
+    #    Built as a full disc and rounded BEFORE the bore is cut — OCC on this build will fillet a
+    #    clean cylinder's two circular edges and refuse the same edges on the finished annulus.
+    lip_or = P.cup_outer_diameter / 2                 # = body_r + pad_lip_extension, LOCKED 27.0
+    lip = (
         cq.Workplane("XY")
-        .workplane(offset=total_h - P.pad_lip_thickness)
-        .circle(flange_or).circle(flange_ir)
-        .extrude(P.pad_lip_thickness)
+        .workplane(offset=total_h - P.cup_lip_depth)
+        .circle(lip_or).extrude(P.cup_lip_depth)
     )
     try:
-        flange = flange.edges().fillet(P.pad_lip_round)   # round the whole brim
-    except Exception as e:  # noqa: BLE001 — report, don't mask; the flange still stands
-        print(f"  [warn] cup: pad-flange roundover skipped ({e}).")
-    cup = cup.union(flange)
+        lip = lip.edges("%CIRCLE").fillet(P.pad_lip_round)   # soften the rim the pad rolls over
+    except Exception as e:  # noqa: BLE001 — report, don't mask; the lip still stands
+        print(f"  [warn] cup: pad-lip roundover skipped ({e}).")
+    lip = lip.cut(cq.Workplane("XY").circle(void_r).extrude(total_h))   # bore stays Ø42 through the lip
+    cup = cup.union(lip)
 
     # 8. Cable exit — a hole through the −Y wall (the cup's BOTTOM when worn: T_cup
     #    maps cup −Y → global −Z) so the driver cable leaves the cup. At the pivot
     #    mid-height (depth), clear of the ±X pivot bosses. A clean through-cut, last.
+    reach = lip_or + 2.0
     cable = cq.Solid.makeCylinder(
-        P.cable_exit_diameter / 2, od / 2 + 2.0,
-        cq.Vector(0, -(od / 2 + 2.0), P.pivot_boss_z), cq.Vector(0, 1, 0))
+        P.cable_exit_diameter / 2, reach,
+        cq.Vector(0, -reach, P.pivot_boss_z), cq.Vector(0, 1, 0))
     cup = cup.cut(cq.Workplane(obj=cable))
 
     return cup

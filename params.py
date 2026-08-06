@@ -75,8 +75,21 @@ class Params:
     # that flat). Dome height is CAPPED by the void wall (~13 mm here: above that the wall over the ⌀78
     # void thins below ~3 mm). For a FULLER dome (the closed Studio clone) thicken the back band or reduce
     # the cup ID. Built as a LOFT (this OCC build's fillets fail once the grille/bosses complicate it).
-    cup_dome_height: float = 12.0         # SET  rear length that domes (cylinder above); ≤ ~13 before the void wall thins
-    cup_back_face_radius: float = 35.0    # SET  flat back-face radius the grille/ports sit on (≥ grille zone ~31)
+    # REBUILT AT 54 (2026-08-06). Both of these were Daily Driver absolutes on a Ø91.44 cup and
+    # neither survived the fork: cup_back_face_radius 35.0 is LARGER than this cup's outer radius
+    # (24.0 at the body), so the "dome" lofted OUTWARD into a Ø70 mushroom, and dome_height 12.0
+    # ran the taper up past the void floor and thinned the wall below the 3.0 mm floor.
+    #
+    # Both now DERIVE, so they cannot drift out of scale again:
+    #   dome height  = cup_back_thickness — the dome lives ENTIRELY inside the solid back band, so
+    #                  the wall above the void floor is a clean full-thickness cylinder. This is the
+    #                  cap the old comment described in prose but never enforced.
+    #   back-face r  = body radius − cup_dome_bulge, floored at the grille zone so the grille always
+    #                  lands on flat material.
+    cup_dome_bulge: float = 4.5           # SET  how far the dome pulls IN from the body OD at the back face.
+                                          #   Ø48 body − 2×4.5 → a Ø39 flat back face; the grille zone is r19.0,
+                                          #   so the flat clears it by 0.5. Raising this past 5.0 undercuts the
+                                          #   grille; lowering it flattens the dome toward a plain cylinder.
 
     # ---- Cable exit (bottom of each earcup) ----------------------------------
     # A hole through the cup's −Y wall — the BOTTOM when worn (T_cup maps cup −Y to
@@ -93,12 +106,38 @@ class Params:
     # the logo's 64-grid proportions (outer r24/stroke5, inner r13.5/stroke2.5, dot
     # r4.2) scaled into the grille zone. As of Stage 1b these ride FLUSH on top of a
     # structural triangular lattice (below) — they are decoration, not structure.
-    grille_hub_diameter: float = 10.0     # ESTIMATE  the center DOT (logo dome dot)
+    # REBUILT AT 54 (2026-08-06) — the grille now DERIVES FROM cup_interior_diameter.
+    #
+    # Every radius in this block used to be an absolute inherited from the Ø91.44 cup, and the whole
+    # mark had drifted off the part: the zone edge sat at r33.0 on a cup whose body radius is 24.0
+    # and whose void radius is 21.0. The grille was being cut in air outside the shell.
+    #
+    # The grille's zone is now the VOID, less a landing ring of solid floor at the wall — because
+    # the grille's only structural job is to span the void and tie into the wall, so the void is the
+    # dimension it is actually a function of. The logo rings + hub scale off that zone by the mark's
+    # own 64-grid proportions (outer r24/stroke5, inner r13.5/stroke2.5, dot r4.2, so the mark's
+    # outer edge is 26.5 on that grid), which is what "scaled into the grille zone" always meant —
+    # it just was not written as arithmetic before. See the derived helpers.
+    grille_rim_land: float = 2.0          # SET  solid floor annulus left between the grille zone and the void
+                                          #   wall — what carries the whole grille into the shell. At the member
+                                          #   floor (2.0): a landing ring no thinner than any grille bar.
+    grille_logo_zone_fraction: float = 0.60  # TASTE — how much of the zone the logo mark spans, and the knob the
+                                          #   old "thin the logo rings to free up open area (maker's call)" note
+                                          #   predicted would be needed. MAKER'S EYE WANTED.
+                                          #
+                                          #   At 1.0 (Daily Driver's implicit value) the mark fills the zone and
+                                          #   closes ~47 % of it unaided. The lattice pitch then has to open past
+                                          #   the zone radius to stay inside the open-area band, which leaves 3
+                                          #   bars per angle — i.e. only the through-centre bars survive and the
+                                          #   "triangular lattice" degenerates into a 6-spoke wheel. That puts the
+                                          #   logo back to being the structure, which is exactly the arrangement
+                                          #   the Stage 1b rework inverted.
+                                          #   At 0.60 the mesh gets a real pitch (5 bars per angle) and open area
+                                          #   lands on the 0.40 target. Cost: the mark is Ø22.8 on a Ø38 grille
+                                          #   rather than filling it. 0.75 / pitch 0.66 also passes the gate at
+                                          #   open 0.436 if the bolder mark is worth the spoke-wheel — that is a
+                                          #   look-at-it decision, not a numbers one.
     grille_ring_count: int = 2            # ESTIMATE  two concentric LOGO rings (the mark)
-    grille_inner_ring_radius: float = 17.0  # ESTIMATE  inner ring (logo 13.5/24 of outer)
-    grille_outer_ring_radius: float = 30.0  # ESTIMATE  outer ring (rim left for the chamfered back)
-    grille_outer_ring_width: float = 6.0  # ESTIMATE  outer ring weight (the heavier ring)
-    grille_inner_ring_width: float = 3.0  # ESTIMATE  inner ring weight (~½ outer, per the mark)
     grille_member_min_width: float = 2.0  # HARD FLOOR — FDM printability minimum
     grille_target_open_fraction: float = 0.40  # ESTIMATE  target_open (~40%)
     # Structural LATTICE (Stage 1b) — the grille is now a rigid TRIANGULAR ×3 mesh:
@@ -109,12 +148,20 @@ class Params:
     # so it can be bold without being load-bearing and prints self-supporting (built
     # face-down). Member 2.2 / pitch 11.5 are the settings the maker dialed in on the
     # interactive pattern explorer ("landed behind the logo nicely").
-    grille_lattice_member_width: float = 2.2  # SET  triangular lattice bar width (explorer)
-    # Explorer value was 11.5, but against the real BOLD logo (the rings alone cover
-    # ~45% of the zone) that gave only 0.274 open — below the 0.30 floor. Opened to 16
-    # → ~0.385 gate-measured (near the 0.40 target), keeping the bold logo. Denser mesh
-    # later is possible by thinning the logo rings to free up open area (maker's call).
-    grille_lattice_pitch: float = 16.0        # SET  bar pitch (tuned to the open-area floor)
+    grille_lattice_member_width: float = 2.2  # SET  triangular lattice bar width (explorer). Deliberately NOT
+                                          #   scaled with the cup: this one IS a legitimate absolute — it is a
+                                          #   nozzle multiple (0.4 × 5.5), so it is set by the printer, not by
+                                          #   the part. Contrast every radius above, which is not.
+    # REBUILT AT 54: pitch was 16.0, tuned against the Ø91.44 cup's r33 zone. On this cup's r19.0
+    # zone that is nearly the zone diameter — bars at 0 and ±16 only, i.e. three usable bars per
+    # angle and no mesh worth the name. It now derives as the same FRACTION of the zone radius that
+    # 16.0 was of Daily Driver's, then is trimmed to land the open area near target.
+    grille_lattice_pitch_fraction: float = 0.50  # SET  bar pitch as a fraction of the grille zone radius.
+                                          #   0.50 → pitch 9.5, which is the LARGEST pitch that still puts 5 bars
+                                          #   per angle inside an r19 zone (bars at 0, ±p, ±2p need 2p < 19).
+                                          #   Anything looser and only the through-centre bars survive. Close to
+                                          #   Daily Driver's 0.485 (16/33) — the FRACTION was always about right;
+                                          #   it was the absolute that did not survive the change of scale.
     grille_lattice_angles: tuple = (0.0, 60.0, 120.0)  # 3 opposing layers (triangular)
     grille_open_min: float = 0.30         # gate band lower bound (see gate.py OPEN_MIN)
     # Orange ACCENT dot — a press-in cap at the grille center (the mark's only
@@ -129,26 +176,49 @@ class Params:
     # front; the baffle screws into them from the front.
     baffle_screw_count: int = 4           # SET  4 (maker's choice). The baffle's 6
                                           #   OTHER small holes are VENTS, not screws.
-    baffle_bolt_circle_diameter: float = 70.0  # ESTIMATE  bolt_circle_dia (bcd)
-    baffle_boss_diameter: float = 12.0    # SET  10 → 12: deeper wall embedment (reach
-                                          #   r41 > inner wall r39) + a thicker bore wall.
-                                          #   Stays < the female-thread crest (~41.7).
+    # REBUILT AT 54 (2026-08-06). bcd 70.0 (r35) was a Ø91.44-cup number: on this cup it put the
+    # boss circle 11 mm OUTSIDE the body radius, so the four bosses were columns standing in open
+    # air, grazing the flared dome. The bcd now DERIVES from the wall it has to be embedded in —
+    # the boss's outer edge is flush with the body OD, which is the furthest out it can sit without
+    # standing proud of the shell, and the deepest it can bite into the 3 mm wall.
+    baffle_boss_diameter: float = 7.0     # REBUILT  was 12.0 (Ø91 cup). 7.0 = insert_boss_diameter: the
+                                          #   M3 insert's installed 4.70 OD plus 1.15 of wall per side. On a
+                                          #   Ø48 body a Ø12 boss is a quarter of the cup's diameter and cannot
+                                          #   sit inside the wall at all.
+    baffle_boss_clip_to_body: bool = True  # SET  clip boss + flare to the body cylinder so neither stands proud
+                                          #   of the shell. With the bcd hard against the wall there is no room
+                                          #   to flare OUTWARD; the buttress goes inboard, into the void.
     # Boss BUTTRESS — a base flare merging the boss into the cup wall so it can't snap
     # off at the thin wall lens (maker flagged the bare columns as fragile). Built as a
     # wider base step then bored, so it adds real support material at the junction.
-    baffle_boss_flare_diameter: float = 15.0  # SET  base flare OD (reach r42.5 < thread valley)
+    baffle_boss_flare_diameter: float = 11.0  # REBUILT  was 15.0 (Ø91 cup). Boss 7.0 + 2.0 of buttress per
+                                          #   side; clipped to the body OD (above) so the extra material lands
+                                          #   inboard where there is room for it.
     baffle_boss_flare_height: float = 3.0     # SET  flare height at the base
 
     # ---- Yoke pivot bosses in the cup (external, side walls) -----------------
     # Two bosses at 0/180 on the cup's OUTER side wall, at mid-height, each with
     # an M3 heat-set bore (radial, outward-facing) for the fork shoulder-screw.
     pivot_boss_count: int = 2             # ESTIMATE  count (0/180)
-    pivot_boss_diameter: float = 12.0     # ESTIMATE  external boss OD
-    # yoke_pivot_centres=98 puts the boss outer face ~4 mm proud of cup_od (90)
-    # per side — room for the boss + insert + fork-arm seat. The boss spans the
-    # 6 mm wall + 4 mm proud (9 mm total); with the thicker wall its inner end now
-    # stops IN the wall (no lug into the cavity) while still housing the insert.
-    pivot_boss_through_span: float = 9.0  # ESTIMATE  radial length across the wall
+    pivot_boss_diameter: float = 8.0      # REBUILT  was 12.0 (Ø91 cup). 8.0 leaves 1.65 of wall around the
+                                          #   installed 4.70 insert; Ø12 on a Ø48 body is a sixth of the cup.
+    # ================= THIS PAIR WAS THE 3-SOLID MANIFOLD FAILURE =================
+    # yoke_pivot_centres was 98.0 — Daily Driver's Ø91.44 cup plus ~4 mm proud per side. It survived
+    # the fork untouched, so pivot_boss_outer_radius came out at 49.0 and the two pivot bosses were
+    # built spanning r40→49 on a cup whose body radius is 24.0. They touched nothing. gate.py read
+    # that as "cup: 3 solid(s)" — the shell plus two cylinders floating 16 mm off its side.
+    #
+    # Note how quietly it passed everything else: `pivot-clearance: boss proud 22.0 mm >= 2.0` was
+    # GREEN, because a boss floating in space is extremely proud of the wall. A check written
+    # against one scale can read as confirmation at another.
+    #
+    # Both now derive from the body they are mounted on (see the derived helpers):
+    #   centres = cup_body_diameter + 2 × pivot_boss_proud
+    #   span    = outer radius − void radius  (inner end stops flush IN the wall, no lug into the cavity)
+    pivot_boss_proud: float = 4.0         # SET  how far the boss face stands off the body OD — room for the
+                                          #   insert head + the fork-arm seat. Carried over from Daily Driver
+                                          #   as a HARDWARE dimension (M3 insert + arm), not a cup dimension,
+                                          #   so unlike the radii above it is scale-independent and stands.
     pivot_boss_forward: float = 4.0       # SET  shift the pivot this far toward the FRONT (pad/head side)
                                           #   off the cup mid-depth. Pulls the yoke→band junction INBOARD
                                           #   (tighter clamp, more compact, less junction tilt) — maker's fit
@@ -263,7 +333,10 @@ class Params:
     # Standoff bosses on the baffle reach back to the ring at the driver's back depth.
     # (Driver-fit dims are REF / driver-measured-pending.)
     driver_clamp_count: int = 3              # SET  3-ear clamp (matches the prototype)
-    driver_clamp_bolt_circle: float = 60.0   # SET  bcd (r30): between vents (r26) + frame holes (r35)
+    # driver_clamp_bolt_circle is now DERIVED — see the helpers. It was 60.0 (r30), and its own
+    # comment stated the rule it was standing in for: "between vents (r26) + frame holes (r35)".
+    # Those two radii are Ø91.44-cup numbers; rebuilt at 54 the band is (r18.9, r20.5) and a
+    # clamp bcd of r30 sits clean off the baffle. The rule is now the arithmetic.
     driver_clamp_inner_diameter: float = 34.0  # SET  open centre — clears the magnet; shoulder catches the rim
     driver_clamp_recess_clearance: float = 0.4  # SET  driver OD ↔ ring recess (the driver nests in)
     driver_clamp_recess_depth: float = 2.0   # SET  how far the driver nests into the ring
@@ -330,9 +403,10 @@ class Params:
     adapter_seat_thickness: float = 2.0     # ESTIMATE  front seat floor the driver rests on
 
     # ---- Fork / yoke ---------------------------------------------------------
-    yoke_pivot_centres: float = 98.0      # ESTIMATE  pivot_centres (hole-to-hole);
-                                          #   98 (was 92) so the boss stays ~4 mm proud of
-                                          #   the wider 90 mm cup. TODO: verify ±tilt on a print.
+    # yoke_pivot_centres is now DERIVED (= cup_body_diameter + 2 × pivot_boss_proud) — see the
+    # derived helpers, and the note at pivot_boss_proud for why the 98.0 absolute that lived here
+    # was the cup's 3-solid manifold failure. The fork span follows the cup it straddles; it is not
+    # a number anyone should be able to set independently of the cup again.
     yoke_arm_width: float = 9.0           # ESTIMATE  arm_w (at the eye / load end)
     yoke_arm_hub_width: float = 6.0       # ESTIMATE  arm_w at the hub end — gentle taper
                                           #   (slims toward the hub; >= structural floor)
@@ -573,15 +647,24 @@ class Params:
     # the baffle bosses (r35) and the pivot bosses.
     cup_port_count: int = 6                # ESTIMATE  closed-back tuning ports
     cup_port_diameter: float = 6.0         # ESTIMATE  port Ø (a vent_plug press-fits here)
-    cup_port_circle_diameter: float = 50.0 # ESTIMATE  port bolt-circle (r25 — inside the grille zone + bosses)
+    # cup_port_circle_diameter is now DERIVED (see the helpers) — the innermost circle that still
+    # clears the damping ring. It was 50.0 (r25), a Ø91.44-cup number that lands outside this
+    # cup's void entirely.
+    #
+    # IT STILL DOES NOT FIT, AND THAT IS THE REAL FINDING — see the note in the helper. The
+    # closed-back variant is the one thing in this cup that did NOT survive the change of scale
+    # as a rescale. It needs a design decision, not a number. cup_open_back defaults True, so
+    # the built part is unaffected; this is the inactive regenerate.
     vent_plug_clearance: float = 0.2       # SET  plug↔port press fit (radial, per side)
     vent_plug_flange: float = 1.5          # SET  plug head lip (won't push through) + a pull grip
     # Rear DAMPING — a felt / open-cell disc over the grille's INNER face that tames cone
     # breakup + reflections (light, tune by ear). Located by a thin printed RETAINING RING on
     # the interior back floor (the felt drops inside it). Felt itself is a soft good (BOM). The
     # ring stays INSIDE the baffle-boss circle (r35) so it never fouls a boss.
-    damping_felt_diameter: float = 38.0    # ESTIMATE  felt disc OD (covers the central grille; ring stays
-                                           #   inside the closed-back port circle r25 + the bosses r35)
+    # damping_felt_diameter is now DERIVED (see the helpers). Its stated rule — "the ring stays
+    # INSIDE the baffle-boss circle so it never fouls a boss" — was written against bosses at r35
+    # and encoded as the absolute 38.0. Rebuilt at 54 the bosses come inboard to r20.5, which the
+    # old 38.0 (ring outer r20.5) would have run straight into. The rule is now the arithmetic.
     damping_felt_thickness: float = 3.0    # ESTIMATE  felt / open-cell thickness
     damping_ring_wall: float = 1.5         # SET  retaining-ring wall
     damping_ring_height: float = 3.0       # SET  ring height proud of the interior floor (≈ felt thickness)
@@ -652,10 +735,119 @@ class Params:
         return (self.cup_body_diameter - self.cup_interior_diameter) / 2
 
     @property
+    def cup_body_height(self) -> float:
+        # Z extent of the Ø48 BODY — everything below the overhanging Ø54 front lip.
+        return self.cup_depth - self.cup_lip_depth
+
+    @property
+    def cup_interior_depth(self) -> float:
+        # air space behind the front rim = overall depth less the solid grille back band.
+        return self.cup_depth - self.cup_back_thickness
+
+    @property
     def cup_interior_volume_cc(self) -> float:
         # REAR acoustic void = the interior cylinder (ID × interior depth), in cc.
-        # ≈ π·39²·30 ≈ 143 cc — the figure the old spec mis-stated as "~90 cc".
-        return math.pi * (self.cup_interior_diameter / 2) ** 2 * self.cup_depth / 1000.0
+        # Uses cup_interior_depth, NOT cup_depth: on this build cup_depth is the OVERALL
+        # front→back dimension (LOCKED 27.6), so feeding it in here double-counted the
+        # 6 mm back band and over-reported the void.
+        return math.pi * (self.cup_interior_diameter / 2) ** 2 * self.cup_interior_depth / 1000.0
+
+    # ---- Grille, derived from the VOID it spans (rebuilt at 54, 2026-08-06) ----
+    # The mark's own 64-grid proportions, kept in one place so the logo can only ever be
+    # scaled, never re-typed: outer ring r24 / stroke 5, inner r13.5 / stroke 2.5, dot r4.2.
+    # The mark's outer EDGE on that grid is 24 + 5/2 = 26.5, which is what the logo scale
+    # normalises against.
+    _LOGO_GRID = dict(outer_r=24.0, outer_w=5.0, inner_r=13.5, inner_w=2.5, dot_r=4.2, edge=26.5)
+
+    @property
+    def grille_zone_radius(self) -> float:
+        # the grille opens the VOID, less a landing ring of solid floor at the wall.
+        return self.cup_interior_diameter / 2 - self.grille_rim_land
+
+    @property
+    def _logo_scale(self) -> float:
+        return (self.grille_zone_radius * self.grille_logo_zone_fraction) / self._LOGO_GRID["edge"]
+
+    @property
+    def grille_outer_ring_radius(self) -> float:
+        return self._LOGO_GRID["outer_r"] * self._logo_scale
+
+    @property
+    def grille_outer_ring_width(self) -> float:
+        return max(self._LOGO_GRID["outer_w"] * self._logo_scale, self.grille_member_min_width)
+
+    @property
+    def grille_inner_ring_radius(self) -> float:
+        return self._LOGO_GRID["inner_r"] * self._logo_scale
+
+    @property
+    def grille_inner_ring_width(self) -> float:
+        # the mark's proportional stroke lands BELOW the printability floor at this scale
+        # (1.34 mm), so the floor wins. The mark cannot be reproduced proportionally on a
+        # 54 mm cup — that is a fact about the printer, and it is why it is clamped here
+        # rather than quietly re-typed as an absolute.
+        return max(self._LOGO_GRID["inner_w"] * self._logo_scale, self.grille_member_min_width)
+
+    @property
+    def grille_hub_diameter(self) -> float:
+        return max(2 * self._LOGO_GRID["dot_r"] * self._logo_scale, self.grille_member_min_width)
+
+    @property
+    def grille_lattice_pitch(self) -> float:
+        return self.grille_zone_radius * self.grille_lattice_pitch_fraction
+
+    @property
+    def driver_clamp_bolt_circle(self) -> float:
+        # between the baffle's vent ring and the frame bolt circle — the rule the old 60.0
+        # absolute carried in its comment. vent_r matches baffle.py's own derivation.
+        vent_r = (self.driver_aperture / 2 + self.baffle_screw_radius) / 2
+        return 2 * (vent_r + self.baffle_screw_radius) / 2
+
+    @property
+    def cup_port_circle_diameter(self) -> float:
+        # CLOSED-BACK VARIANT — DOES NOT FIT AT 54 mm. Recorded, not papered over.
+        #
+        # The ports have to live in the back-band floor, between the damping ring and the
+        # baffle bosses. Rebuilt at 54 the bosses sit at r20.5 (hard against the wall, which
+        # is as far out as they can go), so the floor inside them ends at r17.0; the damping
+        # ring already reaches r16.5. That leaves a 0.5 mm annulus and no Ø6 port fits in it.
+        # Shrinking the felt until one does drives it to ~Ø19 over a Ø38 grille zone, which is
+        # a token disc, not damping — so the honest answer is that this is a DESIGN decision
+        # and not a value. Three ways out, all the maker's call:
+        #   1. Drop the closed-back variant from First Chair. The brief specifies an open-back
+        #      on-ear throughout; this toggle is inherited Daily Driver "Studio clone" scope.
+        #   2. Interleave the ports ANGULARLY between the four bosses (ports at 0/90/180/270 vs
+        #      bosses at 45/135/225/315). The ports pierce z0–6 and the bosses stand from z6 up,
+        #      so they only actually conflict where they share an angle — which means gate.py's
+        #      purely RADIAL band check is testing for the wrong thing, and only ever passed on
+        #      Daily Driver because that cup was big enough to satisfy the wrong test. Fixing
+        #      the check is a real improvement, but not one to make while trying to go green.
+        #   3. Segment the damping ring into arcs between the bosses and reclaim the floor.
+        # Set to the innermost circle that clears the ring, so the gate's failure message names
+        # the boss conflict specifically rather than reporting a radius that is off the part.
+        ring_outer_r = self.damping_felt_diameter / 2 + self.damping_ring_wall
+        return 2 * (ring_outer_r + self.cup_port_diameter / 2 + 0.5)
+
+    @property
+    def damping_felt_diameter(self) -> float:
+        # felt sits inside the baffle-boss circle: boss edge, less the ring wall and a
+        # clearance. The rule the old 38.0 absolute was standing in for.
+        return 2 * (self.baffle_screw_radius - self.baffle_boss_diameter / 2
+                    - self.damping_ring_wall - 0.5)
+
+    # ---- Cup back form, derived (rebuilt at 54, 2026-08-06) -------------------
+    @property
+    def cup_dome_height(self) -> float:
+        # the dome lives ENTIRELY inside the solid back band, so the side wall above the
+        # void floor is a clean full-thickness cylinder and can never be thinned by the
+        # taper. Daily Driver's 12.0 absolute ran 6 mm past the floor on this cup.
+        return self.cup_back_thickness
+
+    @property
+    def cup_back_face_radius(self) -> float:
+        # flat back face the grille/ports sit on; floored so the grille always lands on it.
+        return max(self.cup_body_diameter / 2 - self.cup_dome_bulge,
+                   self.grille_zone_radius + 0.5)
 
     @property
     def front_cavity_volume_cc(self) -> float:
@@ -670,14 +862,29 @@ class Params:
 
     @property
     def cup_total_height(self) -> float:
-        # interior depth plus the closed (grille) back band (thickened for the
-        # chamfered-back form pass; the air space behind the baffle is unchanged)
-        return self.cup_depth + self.cup_back_thickness
+        # OVERALL front→back — which is exactly cup_depth, LOCKED at 27.6.
+        #
+        # This used to return cup_depth + cup_back_thickness, and that was right on Daily
+        # Driver, where cup_depth meant the INTERIOR depth (20.0) and the back band was
+        # added to it. On First Chair cup_depth is the overall dimension off the reference
+        # profile, so adding the band on top built a 33.6 mm cup against a 27.6 mm lock —
+        # the same inherited-semantics failure as cup_wall_thickness reporting 6.0 for a
+        # 3.0 wall, and just as invisible: nothing checks a total the model never states.
+        return self.cup_depth
 
     @property
     def baffle_screw_radius(self) -> float:
-        # bolt circle the cup bosses AND the baffle holes share (aligned)
-        return self.baffle_bolt_circle_diameter / 2
+        # bolt circle the cup bosses AND the baffle holes share (aligned).
+        #
+        # DERIVED at 54 (was the absolute baffle_bolt_circle_diameter = 70.0, i.e. r35 on a
+        # cup whose body radius is 24.0). The boss sits as far out as it can go without
+        # standing proud of the shell — outer edge flush with the body OD — which is also
+        # the deepest bite it can take into the 3 mm wall.
+        return self.cup_body_diameter / 2 - self.baffle_boss_diameter / 2
+
+    @property
+    def baffle_bolt_circle_diameter(self) -> float:
+        return 2 * self.baffle_screw_radius
 
     @property
     def baffle_hub_radius(self) -> float:
@@ -723,9 +930,24 @@ class Params:
         return self.cup_total_height / 2 + self.pivot_boss_forward
 
     @property
+    def yoke_pivot_centres(self) -> float:
+        # fork span follows the BODY it straddles, plus the boss stand-off per side.
+        # Was the absolute 98.0 — see the note at pivot_boss_proud; that number is what
+        # left two pivot bosses floating free of the cup.
+        return self.cup_body_diameter + 2 * self.pivot_boss_proud
+
+    @property
     def pivot_boss_outer_radius(self) -> float:
         # external boss outer face seats the fork eye at pivot_centres/2
         return self.yoke_pivot_centres / 2
+
+    @property
+    def pivot_boss_through_span(self) -> float:
+        # radial length from the void wall out to the boss face: the boss spans the full
+        # 3 mm wall and stands pivot_boss_proud clear, with its inner end stopping flush
+        # IN the wall (no lug into the cavity). Must exceed insert_boss_depth so the
+        # heat-set insert is fully housed — gate-checked.
+        return self.pivot_boss_outer_radius - self.cup_interior_diameter / 2
 
     @property
     def bow_arc_degrees(self) -> float:

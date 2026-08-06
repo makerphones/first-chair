@@ -102,7 +102,12 @@ def make_driver_coupon() -> cq.Workplane:
 
 
 def make_pad_coupon() -> cq.Workplane:
-    R = P.cup_outer_diameter / 2          # the grip surface — the dia the pad skirt grips
+    # The grip surface is the BODY (Ø48), not the plate (Ø54). This read cup_outer_diameter,
+    # inherited from Daily Driver where the cup's OD *was* its grip face and the lip was a
+    # separate outward brim. On First Chair the pad grips the body behind an overhanging Ø54
+    # rim — so a coupon built at 54 would have validated the pad against a surface 6 mm too
+    # big, which is precisely the fit a coupon exists to catch.
+    R = P.cup_body_diameter / 2           # the grip surface — the dia the pad skirt grips
     wall = P.coupon_pad_ring_wall
     H = P.coupon_pad_ring_height
     inner = R - wall
