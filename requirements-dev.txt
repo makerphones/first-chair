@@ -1,0 +1,29 @@
+# Viewer / dev-only dependencies — NOT needed to build parts.
+# These power the live VS Code "OCP CAD Viewer" (python show.py). build.py and
+# the part modules do not import them.
+#
+# Installing this file also pulls in the core build deps via the line below, so
+# `pip install -r requirements-dev.txt` gives you core + viewer in one go.
+-r requirements.txt
+
+# Pin must match the installed VS Code extension (bernhard-42.ocp-cad-viewer).
+# Extension and package are both 3.4.0. Needs Python >=3.10.
+ocp_vscode==3.4.0
+
+# Headless multi-view renders (render.py): numpy (already a core/cadquery dep)
+# + matplotlib's Agg backend — no display, no GL, no VTK, so it can't reintroduce
+# the OCP viewer problems. RENDER-ONLY: build.py imports render behind a guard and
+# the gate/CI never need it. NOT in requirements.txt (keeps the core build pure).
+matplotlib>=3.8
+
+# OPTIONAL cq_warehouse — powers two things, BOTH guarded so the core build never
+# needs it: (1) the accurate heat-set insert in the assembly viz (parts/hardware.py),
+# and (2) the Stage-2 joint THREAD (parts/thread.py, IsoThread). The thread is a
+# printed feature, but it's import-guarded: if cq_warehouse is absent or a thread
+# won't build, the joint DEGRADES to the plain slip register (still one valid solid),
+# so build.py + gate.py stay importable + green on requirements.txt alone.
+# cq_warehouse is git-only (not on PyPI), dormant since 2023, has NO ShoulderScrew
+# class (screw composed from primitives), and declares no runtime deps (installs
+# WITHOUT touching the pinned cadquery). PINNED to the verified commit for a
+# reproducible thread build (cadquery 2.7 / OCP 7.8 — IsoThread Ø86/pitch-3 builds).
+cq_warehouse @ git+https://github.com/gumyr/cq_warehouse.git@daa46507ecc429c0e2dce11d9d5ffd09b12a42af

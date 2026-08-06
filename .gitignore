@@ -1,0 +1,41 @@
+# Generated geometry — built from source, not committed.
+# Ship STL/STEP to builders via tagged GitHub Releases, not in the tree.
+output/
+*.stl
+*.step
+*.3mf
+
+# Published build artifacts that DO ship in the tree (intentional, not scratch):
+#   renders/*.png        multi-view PNGs (render.py) — shown in the DESIGN-LOG
+#   docs/models/*.glb    the web 3D viewer model (Pages build page)
+# These are .png/.glb so the rules above don't catch them; noted here so a future
+# broad ignore doesn't either. Both regenerate from `python build.py`.
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+# backup/temp venvs (e.g. .venv-old, .venv-new)
+.venv-*/
+venv/
+env/
+
+# Secrets — never commit. FAL_KEY lives in .env (read at runtime).
+.env
+.env.*
+
+# AI design pipeline (FAL)
+# Raw bulk runs are scratch — generate freely, never committed.
+design/_scratch/
+# FAL client cache / temp, if any lands in-repo.
+.fal/
+fal_cache/
+# Curated picks ARE committed (the open-design story). Re-include them even
+# though the global rules above (*.stl, *.3mf) could otherwise catch a mesh.
+!design/explorations/**
+!design/reference-meshes/**
+
+# Editors / OS
+.DS_Store
+.vscode/
+*.swp
