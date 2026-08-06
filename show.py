@@ -28,7 +28,7 @@ def main() -> int:
         return 1
     # ocp_vscode 2.6.2: show(*cad_objs, names=None, ...) — `names` is a list,
     # one label per object (there's no singular `name=`).
-    show(make_assembly(), names=["daily_driver_cup_baffle"])
+    show(make_assembly(), names=["first_chair_cup_baffle"])
     print("Sent assembly to OCP CAD Viewer.")
     return 0
 

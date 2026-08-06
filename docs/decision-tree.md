@@ -1,6 +1,6 @@
 # Decision tree — the order to lock choices
 
-Eight iterations on the Daily Driver taught a dependency order: **lock the inputs,
+Eight iterations on the First Chair taught a dependency order: **lock the inputs,
 derive the cup, derive the mechanism, build the chain, then style.** Following it
 avoids the churn of re-deriving downstream parts when an upstream number changes.
 Reusable for any new headphone (it's about dependencies, not this product).

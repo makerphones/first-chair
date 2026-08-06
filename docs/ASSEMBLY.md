@@ -1,4 +1,4 @@
-# Assembly sequence — Daily Driver
+# Assembly sequence — First Chair
 
 > ⚠️ Like the print guide, this is a **forward reference** for when the design is build-ready —
 > not a green light. It's also the canonical **order** the 3D exploder should follow (the explode

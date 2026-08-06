@@ -5,7 +5,7 @@
 """
 Promote the live BETA build to the STABLE channel.
 
-Two channels are published to the daily-driver GitHub Pages (which serves `docs/`):
+Two channels are published to the first-chair GitHub Pages (which serves `docs/`):
 
   • BETA / live   — `docs/models/`        + `docs/renders/`        (rebuilt by build.py
                     on EVERY push; the website's *beta* page shows this)

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-Assembly — one side of the Daily Driver in its correct relationship (v0.3).
+Assembly — one side of the First Chair in its correct relationship (v0.3).
 
 Chain: cup → baffle (front-mounted) → fork-yoke (pivoted to the cup) → slider
 (rides the fork's adjustment post) → bow (REFERENCE body). The cup/baffle/yoke/slider
@@ -36,7 +36,7 @@ from parts.headband_clamp import make_headband_clamp
 # below are a PUBLIC CONTRACT: the website viewer toggles/isolates parts by them
 # (they match the asm.add(name=...) calls in make_assembly). Renaming a part there
 # means updating this too (and the manual). build.py emits this to
-# docs/models/daily-driver.groups.json next to the GLB; the viewer fetches it.
+# docs/models/first-chair.groups.json next to the GLB; the viewer fetches it.
 SUBASSEMBLIES = {
     "groups": [
         {"id": "earcup", "label": "Earcup",
@@ -61,9 +61,9 @@ SUBASSEMBLIES = {
     "bought": ["bow_ref", "earpad_R", "earpad_L", "paper_R", "paper_L"],
     # The reference head is translucent worn-fit CONTEXT: the viewer shows it OFF by default and holds
     # it OUT of the explode motion (context, not a part). The whole POSE is fitted to it per size — the
-    # viewer swaps GLBs (daily-driver-{s,m,l}.glb) to re-fit, rather than nudging one group. Public contract.
+    # viewer swaps GLBs (first-chair-{s,m,l}.glb) to re-fit, rather than nudging one group. Public contract.
     "reference_context": ["head_ref"],
-    "head_sizes": ["s", "m", "l"],   # the viewer offers these; each loads daily-driver-<size>.glb
+    "head_sizes": ["s", "m", "l"],   # the viewer offers these; each loads first-chair-<size>.glb
 }
 
 
@@ -225,7 +225,7 @@ def make_assembly(worn_head: str = "m") -> cq.Assembly:
     # the slider so its bolts/slot align with the slider's clamp.
     cover = tilt(T_yoke(make_headband_clamp().translate((0, 0, slider_z))))
 
-    asm = cq.Assembly(name="daily_driver")
+    asm = cq.Assembly(name="first_chair")
     for nm, solid, col in (("cup", cup, CHARCOAL), ("baffle", baffle, ORANGE),
                            ("driver", driver, DRIVER_C), ("driver_clamp", driver_clamp, STEEL),
                            ("yoke", yoke, YOKE_C), ("slider", slider, SLIDER_C)):

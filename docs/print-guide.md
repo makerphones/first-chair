@@ -1,6 +1,6 @@
-# Print guide — Daily Driver (DRAFT — NOT print-ready)
+# Print guide — First Chair (DRAFT — NOT print-ready)
 
-> ⚠️ **The Daily Driver is not ready to print or assemble.** All parts *build*
+> ⚠️ **The First Chair is not ready to print or assemble.** All parts *build*
 > green (see `PARTS.md`) and pass the *printability* linter (0 HARD), but that's a low bar — the
 > DESIGN still needs significant work before a print-and-assemble: measurements,
 > fit, acoustics, mechanism detail, the soft yoke, the headband pad, and the

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-Daily Driver — parametric values.
+First Chair — parametric values.
 
 This is the single source of truth for every dimension in the model. Change a
 value here and the affected parts follow. All values are in millimetres.
@@ -563,7 +563,7 @@ class Params:
     # ---- Acoustic geometry (v0.3 acoustic pass) ------------------------------
     # OPEN vs CLOSED back is ONE toggle, so the SAME architecture yields both variants
     # (the closed-back conversion designed in from the start). True = the open rear grille
-    # (the Daily Driver default — forgiving, airy). False = a SOLID back + a ring of
+    # (the First Chair default — forgiving, airy). False = a SOLID back + a ring of
     # PLUGGABLE tuning PORTS, so the closed-back is a regenerate, not a redesign. Shared
     # across both: the damping disc + the front-seal gasket.
     cup_open_back: bool = True             # SET  open rear grille (False = closed-back variant)
@@ -642,7 +642,7 @@ class Params:
     def cup_wall_thickness(self) -> float:
         # The cup's ACTUAL radial wall.
         #
-        # MEASURED FROM THE BODY, NOT THE PLATE. Daily Driver computed this against
+        # MEASURED FROM THE BODY, NOT THE PLATE. First Chair computed this against
         # cup_outer_diameter, and that was correct there because its OD *was* the body —
         # its retaining lip was a separate outward brim. On First Chair the lip IS the
         # baffle plate overhanging the body, so cup_outer_diameter (54.0) is the PLATE

@@ -1,4 +1,4 @@
-# Daily Driver — Industrial Design Brief
+# First Chair — Industrial Design Brief
 
 **v0.1 · for the form / industrial-design pass**
 
@@ -13,7 +13,7 @@
 > (Beyer-type), not the Brainwavz HM5. Read this brief as the form input; read `design-spec.md` as
 > the current source of truth.
 
-This is the brief for the *form* of the Daily Driver — what it looks like and feels like.
+This is the brief for the *form* of the First Chair — what it looks like and feels like.
 It exists because the functional skeleton (parametric CAD, build pipeline) is proven, and the
 form is the next pass. Output of this pass is 3–5 form directions to choose from; the chosen
 direction then gets translated back into the parametric CadQuery model, respecting everything

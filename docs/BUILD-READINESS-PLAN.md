@@ -1,4 +1,4 @@
-# Daily Driver — Build-Readiness Plan
+# First Chair — Build-Readiness Plan
 
 Canonical plan for the push to a buildable prototype. Captures the 2026-06-27 readiness
 assessment + the maker's decisions + the work plan. **Source of truth for this push — update

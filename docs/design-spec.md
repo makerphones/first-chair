@@ -1,4 +1,4 @@
-# Daily Driver — Open-Back Headphone
+# First Chair — Open-Back Headphone
 
 ### Design Specification · v0.3 · 2026-06-14
 
@@ -7,7 +7,7 @@ spec the CAD is built against, and the reference behind the build guide, the par
 measurements.
 
 > **🧊 Spin it in 3D** — inspect the assembly in your browser before you build:
-> **[live 3D preview →](https://makerphones.github.io/daily-driver/)**
+> **[live 3D preview →](https://makerphones.github.io/first-chair/)**
 
 > **Every dimension below is a first-pass starting value pending measured parts.** Numbers are
 > here so the geometry has something to build against, not because they're confirmed. They get
@@ -18,7 +18,7 @@ measurements.
 
 ## Overview
 
-The Daily Driver is the canonical first build: a 40 mm open-back headphone that's forgiving to
+The First Chair is the canonical first build: a 40 mm open-back headphone that's forgiving to
 design and to assemble, buildable by a first-timer, and good enough to keep wearing once it's
 done. It's fully parametric and built to be modified — change the driver, the pad, or the head
 size and the model follows. A pre-sourced kit may be offered later; everything here is also

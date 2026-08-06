@@ -154,7 +154,7 @@ def _tilt_clearance(cup, yoke_origin):
 
 
 def main():
-    print("Daily Driver — printability gate\n")
+    print("First Chair — printability gate\n")
     print("Building printed parts in-process (part [warn]s below are the")
     print("deferred-cosmetic SOFT warnings; they do not fail the gate)…\n")
 

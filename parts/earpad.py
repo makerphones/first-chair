@@ -4,7 +4,7 @@
 """
 Earpad — a generalised round cushion MOCKUP (reference only, NOT printed).
 
-The Daily Driver doesn't ship an earpad: builders fit their own round pad from the
+First Chair doesn't ship an earpad: builders fit their own round pad from the
 broad Beyerdynamic range or aftermarket makers (Brainwavz, Dekoni, …). This module
 models a representative round cushion so the assembly and the website views read
 like a finished headphone, and so the cup's pad-grip OD / lip have something to seat.

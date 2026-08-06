@@ -1,5 +1,5 @@
 """
-Headless multi-view renders for the Daily Driver build.
+Headless multi-view renders for the First Chair build.
 Loads a binary STL and writes front/iso/side PNGs with simple directional
 shading -- no display, no GL, no VTK. Deps: numpy + matplotlib only.
     python render.py output/cup.stl --out renders --name cup

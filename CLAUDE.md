@@ -1,6 +1,6 @@
 # CLAUDE.md — working notes for Claude Code
 
-This repo is the parametric CAD for the **Daily Driver**, an open-source
+This repo is the parametric CAD for the **First Chair**, an open-source
 40 mm open-back headphone. It's a project of MakerPhones / Warren Labs. The
 designs are meant to be downloaded, forked, and modified, so the repo is the
 source of truth — not chat.

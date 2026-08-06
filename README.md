@@ -1,11 +1,11 @@
-# Daily Driver
+# First Chair
 
 An open-source **40 mm open-back headphone** you can build yourself, modify, and
 make your own. Parametric CAD — change a driver, a pad, or a head size and the
 model follows. A project of [MakerPhones](https://makerphones.com) / Warren Labs.
 
 > **🧊 Spin it in 3D** — inspect the assembly in your browser before you build:
-> **[live 3D preview →](https://makerphones.github.io/daily-driver/)**
+> **[live 3D preview →](https://makerphones.github.io/first-chair/)**
 
 > **Status: early / in active development.** The cup and baffle are first-pass
 > geometry; the headband parts (yoke, slider) are stubs. Nothing has been
@@ -74,7 +74,7 @@ No printer? FDM print services (JLCPCB, Xometry) will print the set cheaply.
 ## License
 
 **This project is open source under the [MIT License](LICENSE).** You are free
-to use, modify, build, and **sell** the Daily Driver — commercially or
+to use, modify, build, and **sell** the First Chair — commercially or
 otherwise. No "personal use only" restriction, no fee. One license over the
 whole repo, code and docs alike; full text in [`LICENSE`](LICENSE).
 

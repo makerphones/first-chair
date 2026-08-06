@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-Cup shell — the heart of the Daily Driver (v0.3 engineering pass).
+Cup shell — the heart of First Chair (v0.3 engineering pass).
 
 Build order: acoustic void → shell → clean concentric grille (decoupled from the
 bosses) → 4 wall-blended baffle bosses (front-facing heat-set bore) → 2 external
