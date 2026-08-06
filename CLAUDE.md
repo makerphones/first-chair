@@ -32,9 +32,12 @@ text files diff and version-control naturally, and anyone can fork and modify.
     a stub. (cup.py's inline bosses migrate here later — see DESIGN-LOG.)
 - `build.py` — renders parts to `output/`. `python build.py` for all, or
   `python build.py cup baffle` for specific ones. Failures are isolated per part.
-- `pipeline/` — AI-assisted **design** pipeline (FAL): Stage 1 text→concept
-  images, Stage 2 image→reference mesh. It generates OPTIONS and REFERENCES; it
-  never produces engineered CAD. See `docs/design-pipeline.md`.
+- `design/` — the AI-assisted **form** pass. Runs in **Claude Design**, not in this
+  repo: there is no MCP verb for its 3D agent, so the loop is prompt there →
+  download the GLB → check it → ingest. It produces FORM and FIGURES; it has no
+  boolean operations, so **nothing printable can originate there**. See
+  `docs/design-pipeline.md`, and `warren-labs/docs/claude-design.md` for the
+  verified capability map. (The old FAL image pipeline was deleted 2026-08-06.)
 - `docs/design-spec.md` — the functional spec the CAD is built against.
 - `docs/design-pipeline.md` — the AI design pipeline + the taste-vs-convention
   boundary (taste → `params.py` + parametric form in `parts/*.py`; convention →

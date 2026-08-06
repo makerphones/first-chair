@@ -20,20 +20,19 @@ __pycache__/
 venv/
 env/
 
-# Secrets — never commit. FAL_KEY lives in .env (read at runtime).
+# Secrets — never commit.
 .env
 .env.*
 
-# AI design pipeline (FAL)
+# AI-assisted design pass (Claude Design — see docs/design-pipeline.md)
 # Raw bulk runs are scratch — generate freely, never committed.
 design/_scratch/
-# FAL client cache / temp, if any lands in-repo.
-.fal/
-fal_cache/
-# Curated picks ARE committed (the open-design story). Re-include them even
+# Curated keepers ARE committed (the open-design story). Re-include them even
 # though the global rules above (*.stl, *.3mf) could otherwise catch a mesh.
-!design/explorations/**
-!design/reference-meshes/**
+# Each form dir must carry its (skill + seed + prompt) record beside the GLB —
+# a GLB without one is an orphan nobody can regenerate.
+!design/form/**
+!design/figures/**
 
 # Editors / OS
 .DS_Store

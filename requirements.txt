@@ -1,12 +1,14 @@
-# Daily Driver CAD toolchain — core deps to BUILD the parts (build.py).
+# First Chair CAD toolchain — core deps to BUILD the parts (build.py).
 # This repo's env is Python 3.13 (off EOL 3.9). CadQuery's OCP wheels cover
 # 3.10-3.13 on macOS arm64; 3.14 has no OCP wheels yet, so don't go past 3.13.
 # For the live VS Code OCP CAD Viewer, also: pip install -r requirements-dev.txt
 cadquery>=2.7,<2.8        # pulls cadquery-ocp 7.8.1.x (arm64 wheels incl. cp313)
 
-# AI-assisted design pipeline (Stages 1-2): official FAL Python client.
-# Package is `fal-client`; import is `fal_client`. Reads FAL_KEY from env.
-fal-client>=1.0,<2
+# NO AI-design dependency, on purpose. The form pass runs in Claude Design, which is
+# driven by chatting there — there is no MCP verb for the 3D agent, so nothing to install.
+# Prompt there, download the GLB, check it with makerphones/scripts/inspect_glb.py, ingest.
+# (The FAL client that used to live here went with the FAL pipeline on 2026-08-06 — see
+# docs/design-pipeline.md for why it was deleted rather than kept as a fallback.)
 
 # Optional, for visual inspection while iterating:
 # cq-editor      # GUI viewer

@@ -9,6 +9,90 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-06 — Published to the manual, and the design pipeline moves to Claude Design
+
+Two things, both about the build's *surfaces* rather than its geometry.
+
+### Published as a build on makerphones.com
+
+GitHub Pages enabled on this repo (main `/docs`, matching Daily Driver), so
+`makerphones.github.io/first-chair/` now serves the beta channel — the assembly GLB,
+the sub-assembly manifest, and the per-part renders, with
+`access-control-allow-origin: *`, which is what lets the manual fetch them cross-origin.
+
+Two pages on the website, same structure and same components as Daily Driver:
+**First Chair — Design Spec** and **First Chair — Parts & Exploded View**. They lead the
+Build Guides section, ahead of Daily Driver, which is the flagship ordering the brief
+calls for. Daily Driver is untouched — resequenced, not abandoned.
+
+`PartsGallery.astro` had Daily Driver's parts table hardcoded inside it. That table now
+lives in `src/data/build-parts.ts` alongside First Chair's, and the component takes a
+`table` prop defaulting to Daily Driver, so the existing pages are unchanged.
+
+**No CURRENT-build page yet, deliberately.** `promote.py` has not been run — the cup was
+rebuilt hours ago and the gate is still red on one check. Promotion is the maker's call,
+and both website pages carry a caution banner saying this is the live design.
+
+**Found while writing the parts table:** `BOM.md` still lists **Beyerdynamic DT 770/880/990
+earpads** as the default. That is a circumaural pad on a supra-aural headphone — `bom.py`
+was not reconciled at the fork, same class of inherited content as the Ø91 radii. The
+website pages are written from the locked brief (commodity **Grado-pattern** pads, which we
+neither design nor ship), so **the site and the BOM currently disagree**. `bom.py` is the
+one that is wrong.
+
+### The design pipeline now runs through Claude Design
+
+`docs/design-pipeline.md` rewritten at v0.3. It described the FAL image pipeline as current
+— 16 mentions of FAL, zero of Claude Design — which was straightforwardly stale: the FAL
+path was abandoned rather than finished, and the probe results that replaced it never made
+it out of the pre-fork brief and into the build repos.
+
+The capability map is **not** restated here; it lives in `warren-labs/docs/claude-design.md`
+and applies line-wide. What this repo now carries is the MakerPhones-specific part: where it
+sits in the process, what we hand it, and what we demand back.
+
+**The taste-vs-convention boundary survives the change untouched**, and it is worth saying
+why rather than just asserting it: **Claude Design produces taste, never convention.** It is
+a form tool. It cannot author a screw boss you would reuse, and should never be asked to.
+Taste → `params.py` (numbers) + `parts/*.py` (form); convention → `parts/features.py`.
+
+**`pipeline/` deleted** — `config.py`, `gen_concepts.py`, `gen_reference_mesh.py`,
+`smoke_test.py`, plus the `fal-client` dependency and the FAL-specific gitignore rules.
+
+*The decision, recorded so it is not mistaken for neglect:* the case for keeping it as a
+documented fallback is that dead code costs nothing to leave in place. It doesn't. An
+abandoned two-stage path with working code, a config file and a smoke test reads as
+**current** to the next person who opens the repo — and because this repo is the fork
+template for every build after it, the trap regenerates itself with each fork. A paragraph
+of history is cheaper than that. The code is in git history and in the Daily Driver repo.
+
+**`starting-a-new-product.md` gains step 1b:** run the family/form pass in Claude Design
+**before** writing `params.py`, seeded with the repo and the `SUBASSEMBLIES` naming schema.
+The ordering is the whole point — before `params.py` exists there is no engineering to lose
+to a tool that cannot do booleans, and the output is a named part list that reads straight
+into one. Afterwards it can only get in the way.
+
+**Four conventions, written down in all three places, because two of them fail silently:**
+
+- **1 unit = 1 mm.** glTF's spec convention is *metres*, so an unspecified model imports at
+  **1/1000** into a slicer. Nothing errors — you get a 0.054 mm cup.
+- **GLB only, never OBJ.** OBJ has no scene graph, so it *structurally cannot* carry the
+  `SUBASSEMBLIES` hierarchy that is the entire reason to use the tool.
+- **Impose the mesh-naming schema.** It conforms exactly when asked; when it isn't, someone
+  hand-maps every mesh.
+- **The reproducible unit is `(skill + seed + prompt)`, not the prompt.** A project can be
+  seeded from a design system, uploaded files, or a GitHub repo — all three go in the record
+  beside the GLB, or the result cannot be reproduced later.
+
+Run `makerphones/scripts/inspect_glb.py` on anything that arrives: it warns on **both**
+scale-failure directions, which is the only cheap way to catch the two silent ones.
+
+*Out of scope, flagged:* Daily Driver still carries the FAL pipeline and the v0.2 doc (it is
+paused), and the manual's **Designing Headphones with AI** chapter still lists FAL as a tool
+with no mention of Claude Design.
+
+---
+
 ## 2026-08-06 — Rebuilding the cup at 54: what the fork inherited, and the one thing that did not survive
 
 **Starting state:** 17/17 parts building, `gate.py` red on one HARD check —
