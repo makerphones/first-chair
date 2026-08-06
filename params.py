@@ -617,22 +617,42 @@ class Params:
     headband_pad_pleat_radius: float = 2.5        # SET  pleat-seam groove radius (rounded)
     headband_pad_pleat_depth: float = 1.2         # SET  how deep each pleat seam cuts the cushion
 
-    # ---- Earpad (generalised round cushion MOCKUP — bought, the user's choice) -
-    # A representative round earpad so the assembly + website read like a finished
-    # headphone. Users fit their OWN from the Beyerdynamic range or aftermarket
-    # (Brainwavz, Dekoni); these are a generic round-pad ESTIMATE — measure/refine.
-    earpad_outer_diameter: float = 100.0  # ESTIMATE  cushion OD
-    earpad_inner_diameter: float = 60.0   # ESTIMATE  ear-opening ID
+    # ---- Earpad (round cushion MOCKUP — COMMODITY, we neither design nor ship it) -
+    # A representative pad so the assembly + website read like a finished headphone.
+    # NOT a printed part and NOT in the BOM as ours: First Chair builds a rim to the
+    # Grado pattern and the builder buys whatever pad they like.
+    #
+    # RESCALED TO A SUPRA-AURAL FLAT, 2026-08-06. These were Daily Driver's DT 770-class
+    # numbers — Ø100 OD, Ø60 opening, 24 deep — i.e. a CIRCUMAURAL pad on a Ø54 on-ear
+    # cup. Nothing errored, because the pad is a reference mockup that no gate checks,
+    # but it is the first thing anyone sees: the published 3D model on the website showed
+    # an on-ear headphone wearing over-ear pads, and front_cavity_volume_cc — the number
+    # the spec calls the main tuning lever — was computed from it (67.9 cc, on a pad that
+    # does not fit the product).
+    #
+    # PRECISION, stated because two of these are chosen rather than measured: the pad is
+    # explicitly NOT measured before the first print (maker's call — compliant foam reads
+    # badly and the fit is forgiving), so this is a VISUALISATION mockup, not a spec.
+    earpad_outer_diameter: float = 60.0   # REF  the one number with backing: the concept-mesh read
+                                          #   put a Grado-pattern pad at Ø60 OD and the maker's note on it
+                                          #   was "60 mm OD is right". Overhangs the Ø54 rim, as foam does.
+    earpad_inner_diameter: float = 38.0   # ESTIMATE — CALIPER PENDING. The least-supported number here;
+                                          #   nothing in the brief pins the flat's opening. Drives
+                                          #   front_cavity_volume_cc, so treat that figure as soft too.
     earpad_base_flat: float = 1.5         # SET  flat mounting base (seats on the cup front rim)
-    earpad_depth: float = 24.0            # SET  pad height = the FRONT-CAVITY depth. Beyer DT 770/880/990
-                                          #   family ≈ 22–25 mm (published, no caliper needed — see plan);
-                                          #   the mockup torus is Z-scaled to this. Drives front_cavity_volume_cc.
-    earpad_worn_depth: float = 14.0       # SET  WORN SEATED-CONTACT depth — the cup-front→head-surface gap in the
-                                          #   worn pose (sets cup spacing). The assembly now shows the FULL earpad
-                                          #   (earpad_depth) which then COMPRESSES (earpad_depth − this = ~10 mm) into
-                                          #   the head = the worn CLAMP contact (maker: show the full pad with real
-                                          #   clamping force, not the old stubby half-depth pad). Acoustic helpers
-                                          #   still use the relaxed earpad_depth.
+    earpad_depth: float = 9.0             # ESTIMATE  pad height = the FRONT-CAVITY depth. The brief puts
+                                          #   Grado FLATS at ~8–10 mm and flags the concept mesh's 17.6 as
+                                          #   "bowl-thickness, not flat — a bass decision made by accident".
+                                          #   9.0 is the middle of the stated flat range. Swapping flats for
+                                          #   bowls is the builder's main tonal lever, and on this build that
+                                          #   is a purchase, not a reprint — so this number is a DEFAULT to
+                                          #   visualise, not a design commitment.
+    earpad_worn_depth: float = 5.5        # SET  WORN SEATED-CONTACT depth — the cup-front→head-surface gap in
+                                          #   the worn pose (sets cup spacing). The assembly shows the FULL pad,
+                                          #   which then COMPRESSES (earpad_depth − this = ~3.5 mm) into the head
+                                          #   = the worn CLAMP contact. Scaled with the pad: a supra-aural sits on
+                                          #   the ear, so both the free height and the squash are much smaller than
+                                          #   a circumaural's. Acoustic helpers still use the relaxed earpad_depth.
 
     # ---- Acoustic geometry (v0.3 acoustic pass) ------------------------------
     # OPEN vs CLOSED back is ONE toggle, so the SAME architecture yields both variants

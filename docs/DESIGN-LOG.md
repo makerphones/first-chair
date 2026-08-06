@@ -9,6 +9,76 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-06 — The form brief was never rewritten, so the CAD built a shrunken DT880
+
+Maker, looking at the published 3D viewer: *"that's not correct — this was supposed to be much
+more of a Grado type headphone. I think we do actually need to resort to Claude Design and do
+some of the design work before the actual build, looks like we got ahead of ourselves."*
+
+Correct, and the cause is one file.
+
+`docs/industrial-design-brief.md` — **the document the geometry is supposed to descend from** —
+was Daily Driver's brief with the product name changed. It said, in v0.1:
+
+> An open-back, **over-ear (circumaural)** DIY headphone … the chosen direction is
+> **DT880-family, around-ear** … the target pad is the **Dekoni Universal 100 mm**.
+
+The fork reset about eight dimensions in `params.py` and left that untouched. So the CAD did
+exactly what it was told: it built a DT880 at 54 mm. Domed cup, circumaural stance, over-ear
+pads on a Ø54 rim. **Dimensionally correct, formally the wrong product.**
+
+This is the third and worst instance of the session's one recurring failure — inherited content
+renamed rather than rebuilt. The Ø91 radii in `params.py` were the same bug in numbers; the
+DT 770 pads in `BOM.md` the same bug in sourcing; this is the same bug in *intent*, and it sits
+upstream of both. Everything downstream was faithfully derived from it, which is exactly why
+nothing caught it: the gate checks printability, not whether we are building the right object.
+
+**And the rule that would have caught it was written today, in this repo, a few hours earlier.**
+`starting-a-new-product.md` step 1b: run the form pass in Claude Design *before* writing
+`params.py`. This build predates the rule it needs. The process document is right; it just
+arrived after the fork it was describing.
+
+### What changed
+
+- **`industrial-design-brief.md` rewritten at v0.2** as a supra-aural, with its false
+  "direction resolved — DT880-family" claim removed and **the form re-opened**. It now states
+  constraints and deliberately does not state the answer.
+- **`design/form/SEED.md` added** — the operational seed to hand Claude Design: the naming
+  contract, the four conventions, the locked dimensions, the honest description of what is
+  wrong with the current model, and the Grado boundary. Committed, because the reproducible
+  unit is `(skill + seed + prompt)` and a seed kept in a chat window is not a record.
+- **Earpad mockup rescaled** from Ø100 × 24 (DT 770 class) to Ø60 × 9 — a supra-aural flat.
+  The Ø60 has backing: the concept-mesh read put a Grado-pattern pad there and the maker's own
+  note was "60 mm OD is right", and the brief puts flats at 8–10 mm thick. **The Ø38 opening is
+  mine and wants a caliper**, and it drives `front_cavity_volume_cc`, which moves 67.9 → 10.2 cc.
+  Treat that figure as soft. The pad is a visualisation mockup, not a spec — we neither design
+  nor ship one.
+- **Both website pages now say the form is wrong**, in those words, rather than implying the
+  model is merely unfinished. The maker's call was to leave them up: a beta channel showing
+  work in progress is the point, and it is how this got caught.
+
+### The direction, settled by the maker
+
+**Supra-aural architecture is the constraint; the form language is the open question.** Grado
+is the right *architectural* reference — small cup, rod-in-block gimbal, minimal band, flat rear
+face, everything visible — and the wrong styling target. `design-spec.md` §5's diverge-on-purpose
+table stands. The pass produces 3–5 directions rather than my writing an answer into the brief.
+
+**Not decided here, on purpose:** cup profile (the inherited dome is up for replacement), how
+the grille reads at this size, the gimbal (ours is a fork-yoke from an over-ear; Grado's
+rod-in-block gets a rotational axis for free), and the worn stance.
+
+### Blocked on
+
+The `claude-design` MCP needs `/design consent`, which needs an interactive session — so the
+project could not be seeded from here. `SEED.md` is the handoff instead. Note the MCP has no
+verb for the 3D agent in any case; seeding is the only thing it would have automated.
+
+**No further geometry until the form pass lands.** Building more parts against a brief we know
+is wrong just makes more to throw away.
+
+---
+
 ## 2026-08-06 — Published to the manual, and the design pipeline moves to Claude Design
 
 Two things, both about the build's *surfaces* rather than its geometry.
