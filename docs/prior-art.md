@@ -59,6 +59,50 @@ as *"a base that people can build upon and improve."*
 | **BOM facts** — PJ392 socket, M4 DIN934, JST PH 2-pin, HM5 pads, MonsterBolts as a source | Part numbers and suppliers are facts, not expression. |
 | **The driver source list** | A directory of parts and suppliers — factual data. Our brief calls choosing the driver *"the gate on everything else"*, so this is materially useful and entirely safe. |
 
+### The architecture, read from their CAD (2026-08-07)
+
+Measured from the published `.3mf` parts — bounding boxes only, to understand how it is put
+together. No geometry taken.
+
+```
+EARCUP — three stacked plates, not a cup
+  40mm-pad-mount.3mf     96 × 96 ×  5.0      driver-size specific, ±grille
+  40mm-body.3mf         106 × 100 × 12.2     driver-size specific
+  open/closed-shell     100 × 100 × 18.0     SHARED across every 40–60 mm driver
+                                    ─────
+                                     35.2 mm total depth, in three shallow plates
+
+HEADBAND
+  headband-arc          183 × 114.6 × 36     the band, 36 wide
+  tpu-suspension-pad    200 ×  60  ×  1.5    a FLAT 1.5 mm sheet that flexes into shape
+  yoke                  100 ×  71  × 10.0    a flat arc; mk2 11.1, 90°-variant 11.5
+  headband-clip          36 ×  12  ×  9.2
+  screw-holder           10 ×  10  × 12.2    the captured-nut part — IDENTICAL in Part 1 and 2
+```
+
+**The finding that matters more than any of the individual ideas: every part is a shallow,
+flat-printing plate.** 5 mm, 12 mm, 18 mm, 10 mm, 1.5 mm. Nothing is a deep cup. Their 35 mm
+of earcup depth is *three plates stacked*, which is how the listing can claim **"easy to print
+out without any supports"** and mean it.
+
+That is not a styling decision. **It is the print constraint doing the architecture** — and it
+is the answer to a question this project has been circling for days. We went looking for a
+house *language* and kept borrowing one from machined products. For a printed product the
+language should fall out of what prints well: flat parts, no supports, layer lines along the
+load. Their whole object is legible as that one rule applied consistently.
+
+Ours, by contrast: one cup, 27.6 mm deep, printed grille-face-down with *"light supports
+(pivot bosses)"*. Our brief demands support-free printing of the **yoke** and the **slider**
+and says nothing at all about the cup. That is an inconsistency we imposed on ourselves.
+
+Two more things the measurements give away:
+
+- **Rotation is a file, not a joint.** `yoke.3mf`, `yoke-mk2.3mf`, `90-degree-rotation-yoke.3mf`
+  share one 100 × 71 envelope. You do not build a swivel — you print the one you want. A whole
+  degree of freedom's mechanism, deleted for the cost of an extra STL.
+- **Height adjustment is clip position, not a slider.** There is no slider part anywhere in the
+  bundle. Given ours is the hardest unsolved item in the build, that is worth a real look.
+
 ### The signal we should take most seriously
 
 Part 3: *"you must have some experience with soldering before attempting this. It's a pain
