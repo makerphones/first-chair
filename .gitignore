@@ -38,3 +38,13 @@ design/_scratch/
 .DS_Store
 .vscode/
 *.swp
+
+# Third-party prior art — NEVER commit. See docs/prior-art.md.
+# Variable Openmod (Armored Soul) is CC BY-NC-SA 4.0: ShareAlike is incompatible with this
+# repo's MIT licence and NonCommercial forbids the kit/book path. Their files must not enter
+# this tree in any form. Belt-and-braces against an accidental `git add -A`.
+**/openmod*/
+**/variable-openmod*/
+**/*openmod*.step
+**/*openmod*.f3d
+**/*openmod*.3mf
