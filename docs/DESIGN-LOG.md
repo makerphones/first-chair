@@ -9,6 +9,61 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-07 — First form decision that actually landed: `taper_mid`
+
+After six Claude Design passes produced nothing worth building, form exploration moved
+in-house — `design/form/profiles.py` builds each direction as a real CadQuery solid from a
+list of `(radius, depth)` points and renders a contact sheet. Six silhouettes, then the split,
+then the section. **Three iterations, one afternoon, no handoff.**
+
+**Decided: `taper_mid`, flush joint, split at 12.0.** Straight front wall from the lip to the
+split, then tapering to a Ø29 back face. 24.0 deep, ~9.1 g of PETG.
+
+The route there is worth keeping, because each step was the maker correcting a real error:
+
+1. **Six silhouettes.** Liked `shallow` and `waist`.
+2. **The split.** Maker's read: the profile is the *front* piece, baffle integrated, driver
+   loading from the rear, and something closes the back. Asked whether the waist could even
+   be split — and it inverts: **a waist is the best place to put a parting line**, because a
+   seam at the narrowest point reads as intent. Also found that integrating the baffle into
+   the front piece **registers the driver concentric to the pad by geometry** rather than by
+   assembly, and makes the rear cup — where the acoustics live — the part you iterate.
+3. **"It looks like a yoyo."** Correct: that profile swelled, pinched, then flared back out.
+   Wide-narrow-wide. The fix was *"the base of the one on the left with the back of the other
+   one flipped"* — straight front, mass falling away from the head.
+4. **The section.** The 12 mm question could not be answered in the abstract, so it got drawn.
+
+### What the section settled
+
+```
+ear ──5.5── cup face ──3.5── flange ──5.0── driver back ──3.5── split
+            (worn pad)       (dome + excursion 2.0 forward)
+```
+
+**Front cavity 7.0 mm**, and it is mostly the pad — flats to bowls moves it several mm, which
+is *why* the pad swap is the tuning lever rather than something we design around. The flange
+at 3.5 back is a choice, not a constraint: pushing it back trades front cavity for tail room 1:1.
+
+### Two things deferred honestly
+
+**The parting line** is flush for now. A **shadow gap** (rear cup stepping down 0.6–1.2 mm for
+~2 mm above the joint) was drawn and remains available — a pure diameter step, so zero overhang
+on either part, and it hides tolerance mismatch that a flush joint displays. A chamfer was
+considered and rejected: on whichever part faces it down it is a first-layer overhang.
+
+**The joint** is unresolved. A quarter-turn bayonet is probably sufficient — retention is the
+lug ramp and detent, not the rotation angle, and three lugs share load three ways. If it wants
+more travel, a **3-start coarse thread** gives ~120° and still lands in one of three defined
+positions, which is the real objection to a single-start thread: it stops wherever friction says,
+so anything directional on the rear cup lands at a random angle.
+
+### Paused on measurements
+
+The section runs on two assumptions — dome proud 1.5, excursion 0.5 — and the planar numbers are
+invented outright. `design/form/MEASURE-DRIVERS.md` lists what to take and what each number
+decides, including the one that usually bites: **solder tab protrusion.** With 3.5 mm behind the
+driver, the terminals rather than the basket may be what sets the split.
+
 ## 2026-08-07 — Stop prescribing. A brief that asks for a design instead of an execution.
 
 Maker, after four form passes came back as rearrangements of the product we already have:
