@@ -37,3 +37,39 @@ profile goes straight into `parts/cup.py` as the lathe profile it already is.
 one ("Courbes non jointives"), so its wall is thicker than 3.0 at the back and its mass
 is overstated. The silhouette is correct; the number isn't. Same class of OCC fragility
 recorded in `docs/cadquery-build-notes.md`.
+
+---
+
+# Split study — where does the part break?
+
+`design/form/splits.py`. Two cases, assembled and exploded, in `_contact-splits.png`.
+
+**The architecture being tested:**
+
+| | |
+|---|---|
+| **FRONT** | pad rim + baffle + driver seat, **one printed part**. The driver is registered concentric to the pad by *geometry* rather than by assembly — no bolt circle, no four insert positions to align. |
+| **REAR** | the acoustic variable: open area, volume, damping. The part a builder iterates and swaps — which makes open-vs-closed a **part**, not a parameter. We already learned that lesson the expensive way. |
+| **DRIVER** | loads from the rear, seats against the back of the front piece. |
+
+Both halves print open-side-down, no supports. That is *why* the split goes here.
+
+| case | split | front | rear |
+|---|---|---|---|
+| `shallow` | 11.0 of 21.6 | 4.3 g | 6.7 g |
+| `waist_split` | 15.5 of 27.0 — **at the pinch** | 9.0 g | 7.3 g |
+
+`waist_split` is a *true* waist. The original `waist` only swells then tapers; this one
+pinches to Ø42.8 at d=15.5 and flares again behind it, so **the parting line has somewhere
+to hide.** A seam at the narrowest point reads as intent; the same seam on a straight wall
+reads as a seam.
+
+## On joining the two
+
+- **Screw thread** — no fasteners, serviceable. But a thread **cannot control where it
+  stops**, so anything directional on the rear cup (mark, cable exit, an oriented grille)
+  lands at a random angle. Only viable if the rear is rotationally indifferent.
+- **Bayonet, quarter-turn** — no fasteners *and* a defined angular stop. Strongest option.
+- **Screws** — positive and serviceable, but reintroduces bosses, inserts and hardware, and
+  works against the *"only parts not printed are ___"* sentence.
+- **Glue** — kills serviceability. Against the standing tie-breaker: the user is a tweaker.
