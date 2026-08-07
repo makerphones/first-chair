@@ -14,8 +14,7 @@ open-area, exact volume target) is measurement-gated — these are the parametri
 
 ## Tuning controls (all parametric)
 
-- **Back:** OPEN rear grille (`cup_open_back`) — closed-back is a regenerate, not a redesign.
-- **Rear vents (closed-back):** 6 × ⌀6 mm ports, each pluggable (`vent_plug`) — plug N to dial openness.
+- **Back:** OPEN rear grille — First Chair is open-back, full stop (Session is the line's closed-back build).
 - **Rear damping:** ⌀30 × 3 mm felt disc, seated in the cup's damping ring over the grille.
 - **Front seal:** 1.5 mm foam gasket at ~33% squeeze (gate-checked into 30–50%).
 - **Front cavity = pad depth** (9 mm) — the main tuning lever (swap pads).

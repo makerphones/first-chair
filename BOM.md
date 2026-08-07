@@ -29,7 +29,6 @@ bought-part reference · **SPEC** spec pinned, SKU is builder's choice ·
 | Front-seal foam gasket — driver↔baffle (33% squeeze) | 2 | ~1.5 mm foam ring, ~2.5 mm wide (clamp compresses to 1.0 mm) | foam tape — builder-cut | ~$1 | ESTIMATE |
 | Rear damping felt disc (⌀30 × 3 mm) | 2 | acoustic felt / open-cell — drops into the cup's damping ring over the grille | Parts Express / craft felt | $3–5 | ESTIMATE |
 | Front acoustic paper / mesh — 4 arc STRIPS per ear (~0.3 mm) | 8 strips (4/ear) | cut as straight-ish strips (low waste); each glues into a baffle FRONT 'hot-dog' depression over its vent holes — the paper sets back→front resistance. GRADE (weight / mesh count) measurement-gated to the driver | acoustic paper (speaker-cone paper) / metal mesh | ~$1 | ESTIMATE |
-| Vent plug — printed, CLOSED-BACK variant only (reversible openness tuning) | as needed | press-fit ⌀6 mm port; plug N of 6 | own printer (parts/vent_plug.py) | ~$0 | SPEC |
 | Printed parts (2× cup, baffle, yoke, slider, driver clamp, shoe per side) | 1 set | PETG recommended | own printer or print service | $3–25 | ESTIMATE |
 
 ## Sourcing notes

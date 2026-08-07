@@ -9,6 +9,43 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-07 — The closed-back variant is deleted, not deferred
+
+The gate had been red on every push since the cup rebuild, on one check:
+`closed-back-ports-clear`. I demoted it to SOFT first — a gate that fails constantly
+teaches you to ignore it, and the next real unprintable part would have arrived looking
+identical. Then the maker took the obvious next step: *"sounds like something we should
+do?"* Yes.
+
+**Deleted rather than fixed, for two reasons that stack:**
+
+1. **It does not fit at 54 mm, and that was a real finding.** The ports live in the
+   back-band floor between the damping ring and the baffle bosses. Rebuilt at 54 the
+   bosses sit at r20.5 — hard against the wall, as far out as they can go — so the floor
+   inside them ends at r17.0 while the ring already reaches r16.5. No Ø6 port fits a
+   0.5 mm annulus, and shrinking the felt until one does gives a token Ø19 disc over a
+   Ø38 grille zone.
+2. **The line now has a closed-back product.** Session is the over-ear closed monitoring
+   build. First Chair carrying its own closed-back conversion is a second answer to a
+   question another product already owns — and it only ever had one because it inherited
+   Daily Driver's "Studio clone" scope through the fork.
+
+This is the maker's own **rule 1** applied to our own work: *if a mechanism isn't needed,
+delete it — "an extra weakness we do not need."* Not deferred, not toggled off. Gone.
+
+**What went:** `cup_open_back`, `cup_port_count`, `cup_port_diameter`, the derived
+`cup_port_circle_diameter`, `vent_plug_clearance`, `vent_plug_flange`, `parts/vent_plug.py`,
+the branch in `cup.py`, the gate check, the BOM row, the `build.py` classification and
+ACOUSTICS line, and the website's tuning-plug card. Recoverable from git history if
+Session ever wants the pattern.
+
+**Build 16/16** (was 17 — vent_plug is gone). **Gate 0 HARD / 0 SOFT — clean for the
+first time since the fork.**
+
+Worth noting what this closes: the one finding I deliberately left failing at the start of
+the session is now resolved the way the brief said it should be — as a design decision,
+by the maker, not as a number I tuned to make a check go green.
+
 ## 2026-08-07 — Form before parts. We had the process backwards.
 
 Maker, after two form passes came back clunky: *"we need to not take a primitive assembly

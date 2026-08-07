@@ -41,7 +41,6 @@ from parts.driver import make_driver
 from parts.earpad import make_earpad
 from parts.headband_clamp import make_headband_clamp
 from parts.yoke_rod import make_yoke_rod
-from parts.vent_plug import make_vent_plug
 from parts.coupon import make_driver_coupon, make_pad_coupon
 
 # render.py is RENDER-ONLY (matplotlib). Guarded so the core build never depends
@@ -69,7 +68,6 @@ ACCESSORY = {
     "grille_dot": make_grille_dot,
     "headband_clamp": make_headband_clamp,
     "slider_shoe": make_slider_shoe,
-    "vent_plug": make_vent_plug,
 }
 # Fit coupons → STL + STEP (printed for QA), but NOT in the reference assembly and
 # NOT in the web parts gallery: they isolate a toleranced interface so it can be
@@ -102,7 +100,6 @@ PART_ROLES = {
     "grille_dot": "press-in accent cap at the grille centre (the mark's orange dot)",
     "headband_clamp": "inner cover plate that sandwiches the metal bow end",
     "slider_shoe": "captive pressure shoe — knob presses it onto the post (no marring)",
-    "vent_plug": "press-fit plug for the closed-back tuning ports (reversible openness knob)",
     "driver_coupon": "FIT COUPON — driver seat/collar + clamp standoff interface (QA)",
     "pad_coupon": "FIT COUPON — pad-skirt grip on the cup OD (QA)",
     "bow": "bought Beyer metal head bow (917017/973361) or DIY spring-steel blank (reference)",
@@ -153,7 +150,6 @@ def gen_acoustics_doc(path=os.path.join("docs", "ACOUSTICS.md")):
     derived from params so the figures can't drift. (Acoustic *tuning* — the real damping amount,
     vent open-area, etc. — is measurement-gated; these are the parametric starting points.)"""
     from params import P
-    back = "OPEN rear grille" if P.cup_open_back else "CLOSED back + tuning ports"
     total = P.cup_interior_volume_cc + P.front_cavity_volume_cc
     lines = [
         "# First Chair — acoustic summary",
@@ -172,9 +168,7 @@ def gen_acoustics_doc(path=os.path.join("docs", "ACOUSTICS.md")):
         "",
         "## Tuning controls (all parametric)",
         "",
-        f"- **Back:** {back} (`cup_open_back`) — closed-back is a regenerate, not a redesign.",
-        f"- **Rear vents (closed-back):** {P.cup_port_count} × ⌀{P.cup_port_diameter:.0f} mm ports, each pluggable "
-        f"(`vent_plug`) — plug N to dial openness.",
+        "- **Back:** OPEN rear grille — First Chair is open-back, full stop (Session is the line's closed-back build).",
         f"- **Rear damping:** ⌀{P.damping_felt_diameter:.0f} × {P.damping_felt_thickness:.0f} mm felt disc, seated in the cup's damping ring over the grille.",
         f"- **Front seal:** {P.front_gasket_thickness:.1f} mm foam gasket at ~{P.front_gasket_squeeze*100:.0f}% squeeze (gate-checked into 30–50%).",
         f"- **Front cavity = pad depth** ({P.earpad_depth:.0f} mm) — the main tuning lever (swap pads).",

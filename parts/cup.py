@@ -123,19 +123,14 @@ def make_cup() -> cq.Workplane:
     keep = keep.union(_ring(r_out, P.grille_outer_ring_width))
     keep = keep.union(_disc(hub_r))             # centre dot (logo)
 
-    # OPEN grille (default) or CLOSED back + pluggable tuning ports — ONE toggle, two
-    # variants (the closed-back conversion). The grille solids above are built either way
-    # (cheap, discarded when closed); only the back treatment differs here.
-    if P.cup_open_back:
-        cup = cup.cut(zone.cut(keep))                       # open the grille gaps
-    else:
-        pcr = P.cup_port_circle_diameter / 2                # CLOSED: solid back + tuning ports
-        for i in range(P.cup_port_count):
-            a = math.radians(i * 360.0 / P.cup_port_count)
-            px, py = pcr * math.cos(a), pcr * math.sin(a)
-            port = (cq.Workplane("XY").workplane(offset=z0)
-                    .center(px, py).circle(P.cup_port_diameter / 2).extrude(cut_h))
-            cup = cup.cut(port)
+    # Open the grille: cut the COMPLEMENT of the keep-solids from the closed back band, so the
+    # members stay and the gaps open to the driver.
+    #
+    # This used to branch on a cup_open_back toggle, with the else-branch replacing the grille
+    # with a solid back and a ring of pluggable tuning ports. That variant was removed 2026-08-07
+    # — it doesn't fit at 54 mm (see the note in params), and Session is the line's closed-back
+    # product, so First Chair does not need its own closed-back conversion.
+    cup = cup.cut(zone.cut(keep))
 
     # 3c. DAMPING retaining RING — a thin ring on the interior back floor that locates a
     #     felt / open-cell disc over the grille (light rear damping; the felt is a soft good,

@@ -58,7 +58,7 @@ class Params:
     # bevel reads without thinning the 3 mm side wall (the bevel lives entirely in
     # this back band). The acoustic air space behind the baffle is unchanged — only
     # the grille substrate gets deeper and the cup ~3 mm taller. See DESIGN-LOG.
-    cup_back_thickness: float = 6.0       # ESTIMATE  closed-back depth (grille substrate)
+    cup_back_thickness: float = 6.0       # ESTIMATE  solid rear band depth (the grille substrate)
     cup_back_round: float = 1.0           # soft-form round on the back-FACE edge where the dome meets the
                                           #   flat grille face (the dome below does most of the rounding now).
                                           #   SCALED DOWN from Daily Driver's 2.5: this cup is 54 mm across
@@ -71,7 +71,7 @@ class Params:
     # The outer wall flows into a CONVEX DOMED back (DT880/Denon family) instead of a cylinder + plain
     # roundover. The dome lives in the rear `cup_dome_height` mm — the front stays cylindrical for the pad
     # seat + the void + the pivot bosses — and bulges from the OD at the dome top inward to a FLAT grille
-    # face of radius `cup_back_face_radius` at the very back (the open grille / closed-back ports sit on
+    # face of radius `cup_back_face_radius` at the very back (the open grille sits on
     # that flat). Dome height is CAPPED by the void wall (~13 mm here: above that the wall over the ⌀78
     # void thins below ~3 mm). For a FULLER dome (the closed Studio clone) thicken the back band or reduce
     # the cup ID. Built as a LOFT (this OCC build's fillets fail once the grille/bosses complicate it).
@@ -655,28 +655,28 @@ class Params:
                                           #   a circumaural's. Acoustic helpers still use the relaxed earpad_depth.
 
     # ---- Acoustic geometry (v0.3 acoustic pass) ------------------------------
-    # OPEN vs CLOSED back is ONE toggle, so the SAME architecture yields both variants
-    # (the closed-back conversion designed in from the start). True = the open rear grille
-    # (the First Chair default — forgiving, airy). False = a SOLID back + a ring of
-    # PLUGGABLE tuning PORTS, so the closed-back is a regenerate, not a redesign. Shared
-    # across both: the damping disc + the front-seal gasket.
-    cup_open_back: bool = True             # SET  open rear grille (False = closed-back variant)
-    # Closed-back TUNING PORTS — a ring of holes that appear ONLY in closed-back mode, each
-    # sized to press-fit a printed PLUG (parts/vent_plug.py), so openness is a MEASURABLE,
-    # REVERSIBLE knob: plug N of M to tune. Port circle sits inside the grille zone, clear of
-    # the baffle bosses (r35) and the pivot bosses.
-    cup_port_count: int = 6                # ESTIMATE  closed-back tuning ports
-    cup_port_diameter: float = 6.0         # ESTIMATE  port Ø (a vent_plug press-fits here)
-    # cup_port_circle_diameter is now DERIVED (see the helpers) — the innermost circle that still
-    # clears the damping ring. It was 50.0 (r25), a Ø91.44-cup number that lands outside this
-    # cup's void entirely.
+    # CLOSED-BACK VARIANT REMOVED 2026-08-07. First Chair is an open-back on-ear, full stop.
     #
-    # IT STILL DOES NOT FIT, AND THAT IS THE REAL FINDING — see the note in the helper. The
-    # closed-back variant is the one thing in this cup that did NOT survive the change of scale
-    # as a rescale. It needs a design decision, not a number. cup_open_back defaults True, so
-    # the built part is unaffected; this is the inactive regenerate.
-    vent_plug_clearance: float = 0.2       # SET  plug↔port press fit (radial, per side)
-    vent_plug_flange: float = 1.5          # SET  plug head lip (won't push through) + a pull grip
+    # It arrived with the fork as Daily Driver's "Studio clone" scope: a cup_open_back toggle
+    # that swapped the rear grille for a solid back plus a ring of pluggable tuning ports
+    # (cup_port_*, vent_plug_*, parts/vent_plug.py). Two reasons it is gone rather than fixed:
+    #
+    #   1. IT DOES NOT FIT AT 54 mm, and that was a real finding, not a tuning problem. The
+    #      ports live in the back-band floor between the damping ring and the baffle bosses.
+    #      Rebuilt at 54 the bosses sit at r20.5 — hard against the wall, as far out as they
+    #      can go — so the floor inside them ends at r17.0 while the damping ring already
+    #      reaches r16.5. No Ø6 port fits a 0.5 mm annulus, and shrinking the felt until one
+    #      does gives a token Ø19 disc over a Ø38 grille zone.
+    #   2. THE LINE NOW HAS A CLOSED-BACK PRODUCT. Session is the over-ear closed monitoring
+    #      build. First Chair carrying its own closed-back conversion is a second answer to a
+    #      question another product already owns.
+    #
+    # Applying the maker's own rule 1: if a mechanism isn't needed, delete it — "an extra
+    # weakness we do not need." The geometry, the vent plug part, the BOM row and the gate
+    # check all went with it. Recoverable from git history if Session ever wants the pattern.
+    #
+    # Shared with the (removed) variant and KEPT, because the open-back build uses them:
+    # the damping disc and the front-seal gasket, below.
     # Rear DAMPING — a felt / open-cell disc over the grille's INNER face that tames cone
     # breakup + reflections (light, tune by ear). Located by a thin printed RETAINING RING on
     # the interior back floor (the felt drops inside it). Felt itself is a soft good (BOM). The
@@ -822,31 +822,6 @@ class Params:
         # absolute carried in its comment. vent_r matches baffle.py's own derivation.
         vent_r = (self.driver_aperture / 2 + self.baffle_screw_radius) / 2
         return 2 * (vent_r + self.baffle_screw_radius) / 2
-
-    @property
-    def cup_port_circle_diameter(self) -> float:
-        # CLOSED-BACK VARIANT — DOES NOT FIT AT 54 mm. Recorded, not papered over.
-        #
-        # The ports have to live in the back-band floor, between the damping ring and the
-        # baffle bosses. Rebuilt at 54 the bosses sit at r20.5 (hard against the wall, which
-        # is as far out as they can go), so the floor inside them ends at r17.0; the damping
-        # ring already reaches r16.5. That leaves a 0.5 mm annulus and no Ø6 port fits in it.
-        # Shrinking the felt until one does drives it to ~Ø19 over a Ø38 grille zone, which is
-        # a token disc, not damping — so the honest answer is that this is a DESIGN decision
-        # and not a value. Three ways out, all the maker's call:
-        #   1. Drop the closed-back variant from First Chair. The brief specifies an open-back
-        #      on-ear throughout; this toggle is inherited Daily Driver "Studio clone" scope.
-        #   2. Interleave the ports ANGULARLY between the four bosses (ports at 0/90/180/270 vs
-        #      bosses at 45/135/225/315). The ports pierce z0–6 and the bosses stand from z6 up,
-        #      so they only actually conflict where they share an angle — which means gate.py's
-        #      purely RADIAL band check is testing for the wrong thing, and only ever passed on
-        #      Daily Driver because that cup was big enough to satisfy the wrong test. Fixing
-        #      the check is a real improvement, but not one to make while trying to go green.
-        #   3. Segment the damping ring into arcs between the bosses and reclaim the floor.
-        # Set to the innermost circle that clears the ring, so the gate's failure message names
-        # the boss conflict specifically rather than reporting a radius that is off the part.
-        ring_outer_r = self.damping_felt_diameter / 2 + self.damping_ring_wall
-        return 2 * (ring_outer_r + self.cup_port_diameter / 2 + 0.5)
 
     @property
     def damping_felt_diameter(self) -> float:

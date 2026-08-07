@@ -154,9 +154,6 @@ def bom_rows():
          "over its vent holes — the paper sets back→front resistance. GRADE (weight / mesh count) "
          "measurement-gated to the driver",
          "acoustic paper (speaker-cone paper) / metal mesh", "~$1", "ESTIMATE"),
-        ("Vent plug — printed, CLOSED-BACK variant only (reversible openness tuning)",
-         "as needed", f"press-fit ⌀{int(P.cup_port_diameter)} mm port; plug N of {P.cup_port_count}",
-         "own printer (parts/vent_plug.py)", "~$0", "SPEC"),
         ("Printed parts (2× cup, baffle, yoke, slider, driver clamp, shoe per side)", "1 set",
          "PETG recommended", "own printer or print service", "$3–25", "ESTIMATE"),
     ]

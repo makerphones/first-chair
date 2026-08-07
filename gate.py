@@ -37,7 +37,6 @@ from parts.grille_dot import make_grille_dot
 from parts.driver_clamp import make_driver_clamp
 from parts.slider_shoe import make_slider_shoe
 from parts.headband_clamp import make_headband_clamp
-from parts.vent_plug import make_vent_plug
 from parts.coupon import make_driver_coupon, make_pad_coupon
 from parts.hardware import shoulder_screw_envelope, heatset_insert_envelope
 
@@ -174,14 +173,12 @@ def main():
     driver_clamp = make_driver_clamp()
     slider_shoe = make_slider_shoe()
     headband_clamp = make_headband_clamp()
-    vent_plug = make_vent_plug()
     driver_coupon = make_driver_coupon()
     pad_coupon = make_pad_coupon()
     parts = {"cup": cup, "baffle": baffle, "yoke": yoke,
              "slider": slider, "driver_clamp": driver_clamp, "adapter_ring": adapter,
              "headband_pad": headband_pad, "grille_dot": grille_dot,
              "slider_shoe": slider_shoe, "headband_clamp": headband_clamp,
-             "vent_plug": vent_plug,
              "driver_coupon": driver_coupon, "pad_coupon": pad_coupon}
 
     r = Report()
@@ -394,39 +391,6 @@ def main():
 
     print("\n— SOFT checks (warn, do not fail) —")
 
-    # Closed-back variant coherence: the tuning ports must clear the baffle bosses (radially)
-    # AND the damping ring, so a cup_open_back=False regenerate is sound rather than a surprise
-    # at conversion time.
-    #
-    # SOFT, not HARD, and the demotion is deliberate — read this before promoting it back.
-    #
-    # This check is CORRECT and currently FAILING: rebuilt at 54 mm the baffle bosses sit at
-    # r20.5 (hard against the wall, as far out as they can go), so the floor inside them ends
-    # at r17.0 while the damping ring already reaches r16.5. No Ø6 port fits a 0.5 mm annulus,
-    # and shrinking the felt until one does drives it to ~Ø19 over a Ø38 grille zone — a token
-    # disc, not damping. See DESIGN-LOG 2026-08-06 for the three ways out; all are DESIGN
-    # decisions and none is a value to tune.
-    #
-    # It is SOFT because cup_open_back defaults True, so these ports are never built: gate.py's
-    # job is to fail before someone wastes filament on an unprintable part, and this part is
-    # not produced. Left HARD it failed CI on every push, which trains everyone to ignore the
-    # gate email — and the next genuine manifold failure would arrive looking identical. That
-    # is a worse failure mode than the one it was guarding.
-    #
-    # PROMOTE BACK TO HARD the moment cup_open_back defaults False, or the closed-back variant
-    # is actually pursued on this product. (Note the line now has Session as the closed-back
-    # product, so this toggle may simply be inherited Daily Driver scope that First Chair
-    # should drop — maker's call, not the gate's.)
-    port_outer_r = P.cup_port_circle_diameter / 2 + P.cup_port_diameter / 2
-    port_inner_r = P.cup_port_circle_diameter / 2 - P.cup_port_diameter / 2
-    boss_inner_r = P.baffle_screw_radius - P.baffle_boss_diameter / 2
-    ring_outer_r = P.damping_felt_diameter / 2 + P.damping_ring_wall
-    _ports_ok = port_outer_r < boss_inner_r and ring_outer_r < port_inner_r
-    _check = r.hard if not P.cup_open_back else r.soft
-    _check(_ports_ok, "closed-back-ports-clear",
-           f"ports r{port_inner_r:.0f}–{port_outer_r:.0f} between damping ring r{ring_outer_r:.0f} "
-           f"and baffle bosses r{boss_inner_r:.0f}"
-           + ("" if P.cup_open_back else " (closed-back variant is ACTIVE — this must pass)"))
 
 
     # Guard setback vs. the front lamina (held + warned in baffle.py when tight).
