@@ -56,15 +56,7 @@
       "id": "headband",
       "label": "Headband",
       "nodes": [
-        "bow_ref",
-        "slider_R",
-        "slider_L",
-        "thumbscrew_R",
-        "thumbscrew_L",
-        "slider_shoe_R",
-        "slider_shoe_L",
-        "headband_clamp_R",
-        "headband_clamp_L"
+        "bow_ref"
       ]
     },
     {

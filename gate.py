@@ -30,13 +30,10 @@ from params import P
 from parts.cup import make_cup
 from parts.baffle import make_baffle
 from parts.yoke import make_yoke
-from parts.slider import make_slider
 from parts.adapter_ring import make_adapter_ring
 from parts.headband_pad import make_headband_pad
 from parts.grille_dot import make_grille_dot
 from parts.driver_clamp import make_driver_clamp
-from parts.slider_shoe import make_slider_shoe
-from parts.headband_clamp import make_headband_clamp
 from parts.coupon import make_driver_coupon, make_pad_coupon
 from parts.hardware import shoulder_screw_envelope, heatset_insert_envelope
 
@@ -166,19 +163,15 @@ def main():
     cup = make_cup()
     baffle = make_baffle()
     yoke = make_yoke()
-    slider = make_slider()
     adapter = make_adapter_ring()
     headband_pad = make_headband_pad()
     grille_dot = make_grille_dot()
     driver_clamp = make_driver_clamp()
-    slider_shoe = make_slider_shoe()
-    headband_clamp = make_headband_clamp()
     driver_coupon = make_driver_coupon()
     pad_coupon = make_pad_coupon()
     parts = {"cup": cup, "baffle": baffle, "yoke": yoke,
-             "slider": slider, "driver_clamp": driver_clamp, "adapter_ring": adapter,
+             "driver_clamp": driver_clamp, "adapter_ring": adapter,
              "headband_pad": headband_pad, "grille_dot": grille_dot,
-             "slider_shoe": slider_shoe, "headband_clamp": headband_clamp,
              "driver_coupon": driver_coupon, "pad_coupon": pad_coupon}
 
     r = Report()
@@ -276,8 +269,6 @@ def main():
     r.hard(eye_web >= MIN_YOKE_STRUCTURAL, "yoke-eye-web",
            f"eye bearing web {eye_web:.1f} mm >= {MIN_YOKE_STRUCTURAL} mm structural")
 
-    r.hard(P.yoke_post_diameter >= MIN_YOKE_STRUCTURAL, "yoke-post-structural",
-           f"adjustment post Ø{P.yoke_post_diameter} mm >= {MIN_YOKE_STRUCTURAL} mm structural")
     # (slider post-bore wall is now the collar-wall check in the slider section below)
 
     # --- Step-down adapter ring (accessory) — printable walls. ---
@@ -300,42 +291,9 @@ def main():
            f"{P.bow_radius:.0f} mm/{P.bow_arc_degrees:.0f}° at rest → "
            f"{P.bow_worn_radius:.0f} mm/{P.bow_worn_arc_degrees:.0f}° worn (R up, arc down)")
 
-    # The clamp collar carries the bow: the barrel must wall the post bore, the mount
-    # tab hosts the two bolts at the bow's hole pitch, and those bolts must clear the
-    # central post bore. (The round post in the bore is the swivel + height bearing.)
-    bore_r = P.m3_insert_hole_diameter / 2
-    post_bore_r = (P.yoke_post_diameter + P.slider_post_clearance) / 2
-    mount_x = P.bow_endtab_hole_spacing / 2
-    collar_wall = P.slider_collar_diameter / 2 - post_bore_r
-    r.hard(collar_wall >= MIN_WALL, "slider-collar-wall",
-           f"barrel wall (collar↔post bore) {collar_wall:.1f} mm >= {MIN_WALL} mm")
-    r.hard(mount_x - bore_r >= post_bore_r, "slider-mount-clears-postbore",
-           f"mount bore x{mount_x:.0f}−r{bore_r:.1f} clears central post bore r{post_bore_r:.1f}")
-    r.hard(P.bow_endtab_hole_spacing + P.m3_insert_hole_diameter <= P.slider_clamp_width,
-           "slider-mount-bores-in-clamp",
-           f"pitch {P.bow_endtab_hole_spacing} + bore {P.m3_insert_hole_diameter} "
-           f"<= clamp width {P.slider_clamp_width} mm")
-
-    # --- Captive pressure SHOE ↔ slider pocket ↔ post (the no-gouge height lock) ----
-    # The screw never touches the post: it presses a conformal shoe whose concave saddle
-    # cradles the post over an AREA. Validate the three things that makes work: the pocket
-    # reaches the post, the saddle conforms (no point-load), and the shoe fits the pocket.
-    # Geometry mirrors parts/slider.py's pocket (p_lo = post_r − 0.5 .. p_hi = barrel R).
-    shoe_bore_r = (P.yoke_post_diameter + P.slider_post_clearance) / 2
-    shoe_pkt_lo = P.yoke_post_diameter / 2 - 0.5
-    shoe_pkt_depth = P.slider_collar_diameter / 2 - shoe_pkt_lo
-    shoe_saddle_gap = P.slider_shoe_saddle_r - P.yoke_post_diameter / 2
-    shoe_pkt_height = P.slider_shoe_height + 2 * P.slider_shoe_clearance
-
-    r.hard(shoe_pkt_lo < shoe_bore_r, "shoe-saddle-reaches-post",
-           f"pocket inner edge y{shoe_pkt_lo:.1f} < bore r{shoe_bore_r:.1f} (saddle opens into the bore → reaches the post)")
-    r.hard(0 <= shoe_saddle_gap <= SHOE_SADDLE_CONFORMAL_MAX, "shoe-saddle-cradles-post",
-           f"saddle r − post r = {shoe_saddle_gap:.2f} mm in [0, {SHOE_SADDLE_CONFORMAL_MAX}] "
-           f"(conformal area cradle — wraps the post, no marring point-load)")
-    r.hard(shoe_pkt_depth >= P.slider_shoe_thickness + P.slider_shoe_clearance
-           and shoe_pkt_height < P.slider_collar_height, "shoe-fits-pocket",
-           f"pocket depth {shoe_pkt_depth:.1f} ≥ shoe {P.slider_shoe_thickness}+clr {P.slider_shoe_clearance}; "
-           f"pocket height {shoe_pkt_height:.1f} < barrel {P.slider_collar_height} mm")
+    # The slider / post-bore / shoe / clamp-collar checks that lived here went with the
+    # mechanism on 2026-08-07. There is no height-adjustment mechanism to check; add
+    # checks when one is designed, not before.
 
     # 7. Baffle boss reaches the inner wall → blended, not free-standing.
     boss_reach = P.baffle_screw_radius + P.baffle_boss_diameter / 2

@@ -1,159 +1,162 @@
-# makerphones — form brief
+# First Chair — design brief
 
-Four 3D-printed open-source headphones, built by hobbyists who fork and modify them. I've
-designed and prototyped headphones professionally before; the reference folder beside this file
-is my own prior work.
+**Design me a headphone.** Not a variation on one I've already drawn — I have that, and it is
+the problem. I want to see what you'd do with the constraints, not watch you execute my answer.
 
-## The order — we are at step 1
+Previous passes failed because I over-specified: I handed over a parts list, a mechanism, exact
+dimensions and a naming contract, and then was disappointed to get back a rearrangement of the
+product I already had. This brief gives you the constraints that are genuinely fixed, the goals
+that matter, and then gets out of the way.
 
-```
-1. FORM — resolved industrial design, no engineering   ← this pass
-2. split that form into parts                          ← printability + serviceability
-3. details: grille, mark, fasteners, joints
-4. I re-author it as engineered CAD, by hand
-```
+---
 
-Ask for printable parts in step 1 and you get primitives butted together, every junction an
-abutment. Design the object, then cut it into parts.
+## 1. What it is, and who it's for
 
-## The house language is the print process
+An **open-back supra-aural (on-ear) headphone**, 3D printed, open source, built at home by
+someone who owns a printer and has never built a headphone before.
 
-This is the thing earlier passes kept getting wrong, including with my help. I fed you a
-vocabulary borrowed from a machined product — polished bezel rings, recessed inlay panels,
-metal collars, *"four materials do the separating."* That language only works with four
-materials. **An FDM headphone has one.** So it either faked the materials, which reads as
-production-line consumer product, or had nothing to separate parts with.
+It is the **first rung of a learning path**. Not the cheapest, not the simplest — the *first*.
+Someone builds this, it works, it sounds good enough to keep wearing, and they believe they can
+build the next one. That is the whole job.
 
-**For a printed object the language falls out of what prints well.** Not applied to it —
-*generated* by it:
+The character we're accepting honestly: a supra-aural leaks by design, so it will be **bass-
+light**. Grado is the reference point and Grados are famously bass-light *and* famously
+unfussy about placement — those are the same fact. We lean into it rather than chasing
+extension the hardware can't produce.
 
-- **Flat, shallow parts that need no supports.** This is the strongest single constraint and it
-  should visibly shape the object. A deep cup has overhangs; a stack of shallow plates does not.
-- **Layer direction as a visible, honest fact.** Along the load on anything structural. A
-  printed part that owns its layer direction is on-brief; one pretending to be injection-moulded
-  is not.
-- **Form does the separating, since material can't.** Profile, section change, how an edge
-  breaks, how one part transitions into the next.
-- **Fasteners are visible and that's fine.** Deliberate, not hidden, not fetishised.
+## 2. What is genuinely fixed — and why
 
-### The sentence the design has to survive
+Everything here is set from **outside** the design. None of it is my taste.
 
-> **"The only parts not 3D printed are ___."**
+**A 40 mm dynamic driver.** Ø39.5 measured frame, ~32 Ω. Bought. 40 mm is the standard size and
+we're not designing around a specialty part.
 
-If that sentence can't be finished in a short breath, the design is wrong — not merely hard,
-*wrong*, because it stops being a 3D-printed headphone and becomes a buy-a-bunch-of-parts-and-
-print-a-few headphone. Our over-ear currently needs a paragraph: ~17 printed pieces against 60+
-bought items across eight suppliers, five thread standards, three insert sizes.
+**A commodity Grado-pattern earpad. We design and ship no pad.** This is the single most
+constraining thing in the brief and it works inward:
 
-The target answer is **screws, drivers, earpads, cable, and one spring steel bow.** Every
-bought item beyond that list has to argue for itself individually, and fastener *variety* costs
-as much as fastener count — **one thread, one insert size, all metric.**
+> The foam stretches over a rim of about **Ø54**, then grips a body of about **Ø48** behind a
+> step of about **3 mm**. Retention is *axial* — the lip stops it climbing forward. Radially
+> it's light: the pad rotates freely on the cup but doesn't slide off.
 
-The intent, in the words I used with the industrial designer on my previous product:
+Those numbers have real tolerance — the same pads fit cups across Ø54–56.7 — so treat the
+**relationship** as fixed and the exact figures as approximate. It must mount a pad someone can
+buy for ten dollars, in a dozen variants, forever.
 
-> *"It should exude quality craftsmanship, **almost looking handmade but with extreme
-> precision**. Parts should be easily replaceable and durable. Reduce weight where ever
-> possible."*
+**Printed on an FDM machine.** 0.4 mm nozzle, 0.2 mm layers, PETG. Nothing thinner than 2 mm.
+**Support-free is a constraint, not a preference** — if a part needs supports it's the wrong
+part. Layer lines run *along* the load on anything structural; layer adhesion is the weak axis
+and that's what snaps.
 
-## Five rules — corrections I gave that designer
+**No printed springs.** FDM plastics creep under sustained strain. A printed band works on day
+one and is loose by month three — the most likely way this build disappoints someone.
+
+**Fasteners: M3 only.** M3 heat-set inserts, M3 screws, M3 washers. One thread, one insert
+size, all metric. Not fewer fasteners at the cost of variety — *one kind*.
+
+**Real heads.** Ear-to-ear is roughly 147 mm at the 50th percentile, ~140–155 across adults.
+Clamp force in the HD 600 / DT 770 class — but note that force on a supra-aural concentrates on
+the ear rather than spreading onto the skull, so the *pressure* is much higher. Comfort is a
+first-order problem here, not a finishing touch.
+
+## 3. What is yours to decide — explicitly
+
+I have previously prescribed every one of these. **I am not prescribing them now.**
+
+- **The part breakdown.** How many parts, what they are, where they split. There does not have
+  to be a "cup" and a "baffle" and a "clamp ring" — that's just what I did last time.
+- **How the driver is held**, and whether the thing holding it is the same thing the pad mounts to.
+- **How deep it is, how thick the walls are, how much volume is behind the driver.**
+- **The rear treatment.** It must be acoustically open — you can see through to the driver — but
+  what that looks like is open.
+- **How it attaches to the head.** A sprung steel band is what I have; anything that clamps
+  without a printed spring is fair game.
+- **Whether height adjustment exists at all**, and how. My last mechanism was a post and a
+  thumbscrew. It's gone. Discrete positions, a compliant layer, or nothing are all on the table.
+- **How many rotation axes, and how they're achieved.** A joint is one answer. A printed
+  variant is another. So is doing without.
+- **Cable entry**, and how the driver gets wired.
+
+## 4. What it has to actually do
+
+Functions, not parts. Solve these however you like:
+
+1. Hold a 40 mm driver at a controlled distance and angle from the ear
+2. Present a rim a commodity Grado-pattern pad mounts to
+3. Let the back radiate freely
+4. Carry the whole thing on a head at a comfortable, consistent clamp force
+5. Fit adult heads across the range
+6. Get a cable to the driver
+7. **Come apart and go back together, repeatedly.** The person building this will take it apart
+   more than once. When serviceability and manufacturability conflict, serviceability wins.
+
+## 5. The character
+
+From the design letter I wrote to the industrial designer on my last headphone:
+
+> *"Something that lasts a lifetime and gets passed down. It should exude quality craftsmanship,
+> **almost looking handmade but with extreme precision**. Parts should be easily replaceable and
+> durable. Reduce weight wherever possible."*
+
+**And the house language is the print process itself.** Not applied to the object — generated by
+it. With one filament, material can't separate parts, so *form* has to: profile, section change,
+how an edge breaks, how one part meets the next. A printed part that owns its layer direction is
+on-brief. One pretending to be injection-moulded is not. Fasteners are visible and that's fine —
+deliberate, neither hidden nor fetishised.
+
+Five rules, from the corrections I gave that designer:
 
 1. **If a mechanism isn't needed, delete it.** I killed a fold hinge with *"an extra weakness we
    do not need."* Not "unnecessary" — a **weakness**.
-2. **No ornament.** On a decorative step: *"I am assuming this is for aesthetic reasons? I do not
-   have to have this."*
-3. **Simplify until it's simple, then stop before it's ugly.** *"Simplify without looking ugly.
-   Hopefully we can find a nice middle ground."* Both halves — austere is not resolved.
-4. **Material follows load.** *"If we don't need the extra metal we can save weight — but it does
-   look nice and beefy."*
+2. **No ornament.** *"I am assuming this is for aesthetic reasons? I do not have to have this."*
+3. **Simplify until it's simple, then stop before it's ugly.** Austere is not resolved.
+4. **Material follows load.** Beefy where it works, gone where it doesn't.
 5. **The prototype settles arguments, not the drawing.**
 
-## The family is a shared kit, not a shared silhouette
+**The sentence the design has to survive:** *"The only parts not 3D printed are ___."* If that
+can't be finished in a short breath, it isn't a 3D printed headphone — it's a buy-a-lot-of-parts-
+and-print-a-few headphone. Target answer: screws, drivers, earpads, cable, and whatever provides
+the spring.
 
-This is the spine, and it replaces every attempt to find a common look.
+## 6. Don't drift
 
-**Four products, one parts kit, four bodies.** What differs between them is the body and the
-pad mount, because those are set by the driver and the pad. Everything else should be the
-*same printed part*: yoke, band, clip, driver clamp, the pad-adapter layer, and the bought bow.
+- **It must not read as a shrunken over-ear.** A supra-aural sits *on* the ear; it's a different
+  object, not a small version of another one. This is the failure mode I keep hitting.
+- **Don't design for a factory.** No bezel-and-inlay, no polished collars, no four-material
+  palette. Those are machining languages and we have one filament.
+- **Don't make it precious.** Someone is printing this at home in PETG.
 
-That is stronger than any silhouette rule — it's functional, it survives every size, it can't be
-styled away, and it halves what we have to design. Judge every proposal against it: **does this
-part need to be product-specific, or am I making it so out of habit?**
+## 7. What I need back, and why
 
-| | Type | Pad | Outline |
-|---|---|---|---|
-| **First Chair** | on-ear, open | Grado | round — a supra-aural sits *on* the ear, no outline to follow |
-| **Daily Driver** | over-ear, open | Beyerdynamic DT | round |
-| **Session** | over-ear, closed | ATH-M50x / Sony 7506 | **oval** — a circumaural encloses the pinna, which is a teardrop |
-| **Encore** | over-ear, open | open | free — the one that can take a bespoke pad |
+You can't produce a printable part — no booleans, no fillets, no tolerances — so I re-author the
+chosen direction by hand in parametric CAD. **These five make that handoff clean, and none of
+them constrain what you design:**
 
-**The pad sets the outline. It is not a styling choice.** Rim diameters differ per product by
-design, set from outside by four different pads — so scale the *profile*, never derive one rim
-from another. And prefer a **pad-adapter layer** (a spacer per pattern) over redesigning the
-mount per pad.
+1. **1 unit = 1 mm.** glTF defaults to metres; unspecified, a model imports at 1/1000 into a
+   slicer and nothing errors.
+2. **Every number in one constants block** at the top.
+3. **Build shapes from explicit profile arrays or curves**, not hardcoded primitives — a lathe
+   profile as a list of `[radius, depth]` points is *directly* re-authorable by me. This is the
+   single most useful thing you can do.
+4. **One named node per part.** Your names, `_R`/`_L` for sides. Tell me what you chose.
+5. **State the parts list and the rules in words.** I re-derive from rules; the geometry is the
+   sanity check.
 
-## Numbers
+**GLB only, never OBJ** — OBJ has no scene graph and loses the hierarchy.
 
-First Chair is locked and regenerates the CAD:
+## 8. The deliverable
 
-```
-pad rim Ø54.0 · body Ø48.0 · bore Ø42.0 · depth 27.6 · driver 40
-```
+**Three directions**, each a genuinely different answer to §4 — not three finishes on one idea.
+State each one's rule in words *before* you model it.
 
-The bow is a bought Beyerdynamic sprung steel part, **identical on all four** — the only truly
-shared component. Relaxed radius 63.5, opening to ~78 worn (this sets ear spacing), developed
-length 236.2, **33 mm wide**, 0.8 thick. Earlier passes drew it 13 mm wide; that reads as a
-wire, it's a strap.
-
-No printed springs. No FDM plastic is a good spring — a printed band works on day one and is
-loose by month three. Everything else is in `params.py`, which wins over this document.
-
-## Two open questions — flag them, don't silently resolve them
-
-Both come from studying a printed open-source headphone that does without mechanisms we assumed
-we needed. Both collide with decisions already recorded, so I want them **surfaced as options
-with trade-offs**, not folded in.
-
-1. **Can height adjustment be deleted rather than mechanised?** Our printed detent-ladder slider
-   is the hardest unsolved item in the build and has never been drawn. Adjustment by discrete
-   clip position, or by a compliant suspension layer, would delete it. My own brief previously
-   ruled that a suspension strap is *"a comfort addition, not a fit mechanism"* — that ruling
-   stands until beaten, but it was made before we knew how hard the slider is.
-2. **Can cup rotation be a print variant rather than a joint?** Ship a yoke at 0° and one at the
-   angle you want, instead of building a swivel. Collides with our locked three degrees of
-   freedom — but the yoke is crowded *precisely because* both rotations were pushed out to it.
-
-## Read first
-
-```
-design/form/reference/README.md    my own prior work, captioned — START HERE
-design/form/reference/*.jpg        prototypes, shape studies, cut headband blanks
-docs/prior-art.md                  what we studied, what we adopted, what is off-limits
-params.py                          every number, source of truth
-assembly.py                        SUBASSEMBLIES — the mesh-naming contract
-```
-
-`shape-sketches-overview.jpg` is the most useful single image: six cup outlines with one
-constant waisted stem flowing into each. That level of resolution, in 3D, is what I want back.
-
-The **HeadRoom Old Faithful** material in the reference folder is informative for **proportion
-and intent only** — that product was machined aluminium and turned wood. The design goals carry
-over; the manufacturing language does not.
-
-## What I want back
-
-**The four products at true relative scale**, resolved enough to photograph — cup, pad, yoke,
-band, all reading as parts. Three directions **within one language**, not three unrelated
-styles. One page, one live 3D stage, nav switching between them.
-
-State the rule in words **before** you model. One line per direction on what doesn't close.
+One page, one live 3D stage, nav switching between them. One line per direction on **what
+doesn't close** — a stated conflict is worth more to me than a resolved-looking render, and it's
+been the most valuable thing you've produced.
 
 **No written study. If it isn't in the stage, it doesn't exist.**
 
-## Conventions
+---
 
-- **1 unit = 1 mm.** glTF's convention is metres; unspecified, a model imports at 1/1000 into a
-  slicer and nothing errors.
-- **GLB only, never OBJ** — OBJ has no scene graph and can't carry the hierarchy.
-- Mesh names per `SUBASSEMBLIES`, `_R`/`_L` throughout.
-- Build each part from a profile, lofted or swept, not a stack of primitives. Where parts meet,
-  the surfaces relate.
+*Context if you want it — my own prior headphone work is in `design/form/reference/` with
+captions, and `docs/prior-art.md` records what we've studied and what's off-limits. Read them
+as background, not as a template. `params.py` describes the design I'm replacing; don't take
+numbers from it.*

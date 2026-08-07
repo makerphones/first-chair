@@ -30,8 +30,6 @@ import cadquery as cq
 from parts.cup import make_cup
 from parts.baffle import make_baffle
 from parts.yoke import make_yoke
-from parts.slider import make_slider
-from parts.slider_shoe import make_slider_shoe
 from parts.bow import make_bow
 from parts.adapter_ring import make_adapter_ring
 from parts.headband_pad import make_headband_pad
@@ -39,7 +37,6 @@ from parts.grille_dot import make_grille_dot
 from parts.driver_clamp import make_driver_clamp
 from parts.driver import make_driver
 from parts.earpad import make_earpad
-from parts.headband_clamp import make_headband_clamp
 from parts.yoke_rod import make_yoke_rod
 from parts.coupon import make_driver_coupon, make_pad_coupon
 
@@ -57,7 +54,6 @@ PRINTED = {
     "cup": make_cup,
     "baffle": make_baffle,
     "yoke": make_yoke,
-    "slider": make_slider,
 }
 # Printable ACCESSORIES → STL + STEP, but NOT part of the reference assembly
 # (e.g. the step-down driver adapter ring — an optional "design big, adapt down").
@@ -66,8 +62,6 @@ ACCESSORY = {
     "adapter_ring": make_adapter_ring,
     "headband_pad": make_headband_pad,
     "grille_dot": make_grille_dot,
-    "headband_clamp": make_headband_clamp,
-    "slider_shoe": make_slider_shoe,
 }
 # Fit coupons → STL + STEP (printed for QA), but NOT in the reference assembly and
 # NOT in the web parts gallery: they isolate a toleranced interface so it can be
@@ -93,13 +87,10 @@ PART_ROLES = {
     "cup": "earcup shell — integral lattice grille, baffle bosses, pivot bosses, pad lip",
     "baffle": "front driver plate — aperture, guard, controlled vents, driver seat + collar",
     "yoke": "fork — tilts on the cup pivot, carries the height-adjust post",
-    "slider": "headband clamp + post barrel — height lock (knob → shoe → post) + swivel",
     "driver_clamp": "3-ear ring retaining the driver against the baffle back",
     "adapter_ring": "step-down ring to host a smaller driver in a bigger baffle (optional)",
     "headband_pad": "crown cushion under the bow (TPU)",
     "grille_dot": "press-in accent cap at the grille centre (the mark's orange dot)",
-    "headband_clamp": "inner cover plate that sandwiches the metal bow end",
-    "slider_shoe": "captive pressure shoe — knob presses it onto the post (no marring)",
     "driver_coupon": "FIT COUPON — driver seat/collar + clamp standoff interface (QA)",
     "pad_coupon": "FIT COUPON — pad-skirt grip on the cup OD (QA)",
     "bow": "bought Beyer metal head bow (917017/973361) or DIY spring-steel blank (reference)",

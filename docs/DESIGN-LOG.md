@@ -9,6 +9,69 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-07 — Stop prescribing. A brief that asks for a design instead of an execution.
+
+Maker, after four form passes came back as rearrangements of the product we already have:
+
+> *"Let's give Claude Design more leeway with its design decisions. Let's not prescribe as
+> much, give it the general gist and maybe a list of basic parts... don't provide the already
+> designed parts, give it a chance to design something really cool and appropriate."*
+
+Correct, and the diagnosis is embarrassing in hindsight. **Every pass produced a Daily Driver
+derivative because I specified one.** I handed over a parts list, a mechanism, exact dimensions
+and a naming contract, then expressed surprise at getting back a rearrangement. The briefs got
+*more* prescriptive with each failure — the opposite of the right correction.
+
+### The brief now separates three things it had been conflating
+
+- **Fixed** — and only what is genuinely set from *outside* the design: the 40 mm driver, the
+  commodity Grado pad interface, FDM constraints, no printed springs, M3-only, real head
+  anthropometry. Each with its reason, so it can be argued with.
+- **Free — explicitly listed.** The part breakdown, depth, wall, rear treatment, how it attaches
+  to the head, whether height adjustment exists at all, how many rotation axes and how. I had
+  prescribed every one of these; the brief now names them as *not* prescribed, which is stronger
+  than silence.
+- **Functions, not parts.** Seven things it must do. There does not have to be a cup and a baffle
+  and a clamp ring — that is just what I did last time.
+
+### The handoff question, answered properly
+
+Maker asked the right question: can we give leeway *and* still get something we can manufacture
+from? Yes — because **the handoff requirements are about form of expression, not design content.**
+
+The thing I re-author from is not the mesh. It is the **source**, which I can read directly, and
+which the last pass already produced in an ideal shape without being asked: `CUP_PROFILES` as
+lists of `[radius, depth]` points. That is *directly* re-authorable as a CadQuery revolve — no
+tracing, no measuring tessellation, no loss, and no provenance question since it is our own
+design from our own tool.
+
+So five requirements, none of which constrain the design: 1 unit = 1 mm · every number in one
+constants block · shapes from explicit profile arrays rather than hardcoded primitives · one
+named node per part · the parts list and rules stated in words.
+
+**What we give up is the `SUBASSEMBLIES` naming contract**, so ingest needs a one-time manual
+mapping after a direction is picked. Since the CAD is hand-authored anyway, that is cheap.
+
+### And the dead mechanism is finally gone from the tree
+
+Not just commented — deleted. `parts/slider.py`, `parts/slider_shoe.py`,
+`parts/headband_clamp.py`, and 41 parameters (`slider_*`, `thumbscrew_*`). What replaced them in
+`params.py` is a marker saying there is no mechanism and naming the open question, because the
+alternative kept regenerating: a design pass read those parameters — *from the file I had
+declared authoritative* — and faithfully redrew the thumbscrew.
+
+The yoke keeps its post; the post is part of the yoke. What is undesigned is the thing that
+*receives* it. The worn-pose solve still needs to place the band somewhere, so two POSE-ONLY
+references carry the numbers the clamp collar used to imply, clearly marked as describing a
+drawing rather than a part.
+
+**Build 13/13. Gate 0 HARD / 0 SOFT.**
+
+*(A first attempt at this deleted `yoke_post_*` too and cascaded into `assembly.py`'s worn-pose
+kinematics — where "fixing" it would have silently chosen one of the open questions. Reverted
+and redone with a smaller blast radius. Worth recording: the cascade is a symptom of the fork,
+not of the cleanup.)*
+
 ## 2026-08-07 — One thread, one insert. And Daily Driver isn't what we say it is.
 
 Two decisions, and the second is bigger than the first.
@@ -43,6 +106,11 @@ Recorded in `params.py`, not executed: the deletion is tangled with the slider, 
 slider survives is an open question for the form pass.
 
 ### Daily Driver gets redesigned, and the reason is an identity problem
+
+> **REVERSED same day.** Maker: *"Let's leave Daily Driver where it was."* The critique below
+> stands and is worth keeping — it is why First Chair exists — but Daily Driver is not being
+> rebuilt now. It stays paused where it is. The fork direction does **not** invert; First Chair
+> is simply its own product.
 
 Maker: *"I think we need to redesign the daily driver anyway... That's too complicated for a 3D
 printed headphone, **it's not really what we say it is, it's more like a buy a bunch of parts

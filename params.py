@@ -452,143 +452,53 @@ class Params:
     yoke_pivot_eye_diameter: float = 12.5  # SET  eye pad OD — grown 12→12.5 so the web stays ≥4 with the Ø4.2 bore
     pivot_tilt_degrees: float = 20.0      # ESTIMATE  tilt_range (±)
 
-    # ---- Yoke↔slider vertical adjustment (Grado HP1000-style: post + thumbscrew) -
-    # The yoke carries a round vertical POST that slides up/down in the slider block
-    # for HEIGHT (head-size) adjustment, locked by a side THUMBSCREW pressing the post
-    # — no detent, like Joe Grado's HP1/HP1000. The round post in a round bore also
-    # lets the cup SWIVEL (fore-aft seal conform) when the screw is loose; tightening
-    # locks both height + swivel by friction. (Replaces the old fixed swivel hub/bore;
-    # Beyer's friction-clip in the block is the alternative, noted in the LOG.)
+    # ---- Yoke adjustment POST (the yoke's own part) --------------------------
+    # The yoke carries a Ø6 vertical post. What RECEIVES that post is undesigned —
+    # see the marker below. These stay because they belong to the yoke.
     yoke_post_diameter: float = 6.0       # SET  Ø6 BOUGHT 304-SS ground shaft (slide + swivel bearing; was Ø8 — too chunky)
     yoke_post_length: float = 50.0        # SET  EXPOSED shoulder length above the boss (= stock 50 mm ISO 7379
-                                          #   shoulder; gives ~32 mm slide travel over the 18 mm barrel — ample.
-                                          #   Step the screw to 60 mm if more head-size headroom is wanted).
-    # The post is a BOUGHT ISO 7379 SHOULDER SCREW — Ø6 ground shoulder (the bearing) × M5 thread,
-    # 18-8 SS, 50 mm shoulder. NO rod machining: the M5 end threads into an M5 heat-set in the
-    # printed fork, and the screw's HEAD is the built-in TOP STOP (wider than the bore). This
-    # collapses the old tapped-rod + epoxy socket + separate stop-knob into one bought fastener,
-    # and is serviceable (threaded, not epoxied). The ground f9 shoulder ≈ Ø5.96–5.99 in the Ø6.4
-    # bore → ~0.4 mm clearance, matching slider_post_clearance.
     yoke_socket_boss_diameter: float = 13.0  # SET  boss OD (> barrel Ø12 → the shoulder's BOTTOM end-stop seat)
     yoke_rod_mount_depth: float = 12.0       # SET  boss depth hosting the M5 heat-set + thread engagement
     yoke_rod_head_diameter: float = 10.2   # REF  ISO 7379 Ø6-shoulder head dk (> bore Ø6.4 → top stop)
     yoke_rod_head_height: float = 4.5      # REF  ISO 7379 Ø6-shoulder head k
     yoke_rod_thread_length: float = 9.5    # REF  M5 thread length (engages the fork heat-set)
-    slider_post_clearance: float = 0.4    # SET  slide fit, post↔slider bore (FDM)
-    slider_adjust_travel: float = 18.0    # ESTIMATE  vertical size-adjust range (reference)
-    # WORN-POSE slider position (assembly viz only — not a printed dim). Where the barrel rides on
-    # the post: 0 = fully EXTENDED (barrel at the post top = biggest head, longest exposed rod);
-    # 1 = fully RETRACTED (barrel at the hub stop = smallest head, rod pokes furthest above). 0.5 =
-    # an average head — the realistic worn look (band pulled down toward the cups, rod up in the slider).
     assembly_worn_slider_frac: float = 0.9  # SET  near-RETRACTED = an average head. The 91 mm cup forces the
-                                            #   band block high, so an average head sits near the bottom of the
-                                            #   post travel (band as low as it goes), with EXTENSION for bigger
-                                            #   heads. Was 0.5 (mid) — which floated the band ~16 mm too high.
-    # Reference HEAD (assembly viz only — a translucent average-head ovoid for worn-fit context in
-    # the 3D viewer: toggleable, OFF by default, excluded from the explode; NOT a printed part).
-    # THREE sizes (S/M/L) so the maker can compare how the band lands + how the cups clamp
-    # across head breadths. The MEDIUM ovoid is sized below; S/L are the same ovoid scaled
-    # UNIFORMLY by their ear-to-ear breadth, so a bigger head is taller-crowned too (the
-    # band-landing reads) and wider at the ears (the clamp-vs-cup-spacing reads). All centred
-    # at x=0 with the ear at head_ref_z, so the ears stay aligned and only the size differs.
     head_ref_ear_half: float = 73.5     # SET  MEDIUM ear-to-ear half (~147 mm bitragion, 50th pct)
     head_s_ear_half: float = 70.0       # SET  SMALL  (~140 mm — ~5th pct adult)
     head_l_ear_half: float = 77.5       # SET  LARGE  (~155 mm — ~95th pct adult)
     head_ref_depth_half: float = 97.0   # SET  front-back half (~194 mm head length, at MEDIUM)
     head_ref_height_half: float = 121.0 # SET  half head-height. With head_ref_z below, the EAR sits
-                                        #   ~8 mm BELOW the ovoid centre (real ears do) → ear→crown ≈ 129 mm
-                                        #   (tragion→vertex, 50th pct), ear→chin ≈ 113 mm. Was 114 (ear at
-                                        #   centre → ear→crown only 114, ~15 mm too short → faked the band-float).
     head_ref_z: float = 8.0             # SET  ovoid centre Z above the ear/pivot (cups touch ~8 mm below centre)
-    # Lock = a CAPTIVE PRESSURE SHOE the thumbscrew presses against the post (NOT the screw tip
-    # on the bare post — a metal point gouges the printed PETG bearing). The screw → conformal
-    # shoe → post: keeps the HP1000 positive lock, distributes the load (no marring), and the
-    # shoe takes up the gap so a SHORT screw works (less protrusion). Mirrors the aftermarket
-    # Grado aluminium rod-block's silicone 'slider pill'. The lock screw is a stock 8-32 knurled
-    # KNOB / large-head thumb screw (below) — it presses the shoe, not the post.
-    # STANDARDIZED on a stock McMaster knurled KNOB / large-head thumb screw — 8-32 thread with a
-    # big ⌀5/8" (≈15.9 mm) GRIPPABLE knurled head (maker's call: easy to twist). The lock is
-    # low-load (presses the shoe), so the bigger thread is for the head + a sturdier stud, not
-    # strength. 8-32 brass heat-set. Boss parametric so a near-equivalent line still fits.
-    slider_thumbscrew_diameter: float = 4.17     # SET  8-32 UNC shaft major Ø (0.164")
-    slider_thumbscrew_insert_hole: float = 5.6   # SET  8-32 brass heat-set install bore = Ruthex 8-32 spec
-                                                 #   (was 5.0 est). Use the SHORT RX-8-32x4.7 insert (4.7 mm) to
-                                                 #   fit the ~5 mm boss; standard 8.1 mm needs a deeper boss. See bom.py.
-    slider_thumbscrew_boss: float = 9.0   # SET  boss OD: ~2 mm wall around the 8-32 heat-set bore
-    slider_thumbscrew_boss_proud: float = 5.0  # SET  boss stand-off — short 1/4"–3/8" 8-32 screw keeps the big head close in
-    slider_thumbscrew_boss_z: float = 0.0      # SET  boss CENTRED on the barrel mid (z=0), dead-centre on the +Y
-                                          #   OUTBOARD face. In the worn pose local +Y → global +X (straight out the side
-                                          #   of the head) = the natural two-finger reach with the phones ON. On the x=0
-                                          #   centreline → the slider stays L/R symmetric (one print both ears).
-    # CAPTIVE SHOE — a small conformal pad (printed PETG or a Delrin blank, ×2) that sits in a
-    # pocket in the barrel wall, trapped between the post and the screw tip. Its concave face
-    # cradles the Ø6 post over an AREA so the lock never marks it.
-    slider_shoe_width: float = 6.0        # SET  shoe X (along the lozenge long axis)
-    slider_shoe_height: float = 7.0       # SET  shoe Z (up the post — taller = more post contact line)
-    slider_shoe_thickness: float = 2.2    # SET  shoe Y (radial, screw-face → saddle); fits the thin barrel wall + boss base
-    slider_shoe_saddle_r: float = 3.4     # SET  concave saddle radius (Ø6 rod r 3 + clearance) → conformal area cradle
-    slider_shoe_saddle_depth: float = 0.8 # SET  how deep the saddle dishes the shoe face
-    slider_shoe_clearance: float = 0.3    # SET  shoe↔pocket sliding fit (drop-in via the bore, post traps it)
-    # Thumbscrew MOCKUP (parts/hardware.py) — viz of the big ⌀5/8" knurled KNOB on the 8-32 stud.
-    # Grip it by the knurled rim; the short shaft keeps it close to the barrel. Tip presses the shoe.
-    thumbscrew_head_diameter: float = 15.9   # SET  ⌀5/8" knurled head (grippable; maker's pick)
-    thumbscrew_head_height: float = 5.0      # SET  head height (grip by the rim)
-    thumbscrew_shaft_length: float = 6.35    # SET  ~1/4" length under head (tip reaches the shoe)
 
-    # ---- Slider = CLAMP COLLAR (replaced the box block) ----------------------
-    # A slim rounded BARREL around the post + a slim 2-bolt mount tab for the bow's
-    # end tab + the side thumbscrew. The round post sliding/turning in the barrel bore
-    # is the SWIVEL + height bearing in ONE robust interface (no separate weak joint);
-    # the thumbscrew clamps both. Far less bulk than the old 42×26×18 block. The bow
-    # end tab (33 mm, 2 holes at bow_endtab_hole_spacing) bolts to the mount tab.
-    slider_collar_diameter: float = 12.0      # SET  barrel OD around the post bore (Ø6.4 bore + 2.8 wall) — sleeker on Ø6 rod
-    slider_collar_height: float = 18.0        # SET  barrel height (post grip + travel feel)
-    slider_collar_rim_round: float = 2.0      # constructed 45° chamfer on the barrel end rims (fillet pass)
-    slider_bore_chamfer: float = 1.0          # countersink lead-in at each post-bore mouth (post entry + clean print)
-    slider_boss_chamfer: float = 0.8          # small countersink at the thumbscrew insert-bore mouth (1.5 mm boss wall)
-    slider_tube_gusset: float = 5.0           # SET  gusset run that fairs the tube into the lozenge (grown-in)
-    slider_tube_gusset_z: float = 14.0        # SET  gusset extent along the tube height (Z)
-    # Headband CLAMP (Beyer-style two-piece, OFFSET-OUTER layout). The post-bore TUBE
-    # (the barrel) is the OUTER body — the band attaches on the barrel's INNER (−Y,
-    # head-side) face, so the rod + tube ride OUTSIDE the metal band (maker's call). The
-    # band's two prongs drop into a RECESS in the clamp plate; a RIB enters the bow's open
-    # CHANNEL (between the rails) for anti-rotation; a separate COVER plate
-    # (parts/headband_clamp.py) sits on the band's inner face and sandwiches the metal with
-    # two M3 screws through the prong-tip holes. The clamp is centred on the barrel mid
-    # (z=0); the post slides the full barrel height and may poke past it (nothing stacks on
-    # the post). slider_clamp_hole_z / rib_z are now relative to the barrel mid.
-    # The clamp body is a flat rounded LOZENGE (Beyerdynamic end-cap look): a stadium outline
-    # (rounded ends) BEVELED toward the barrel, sitting on the barrel's INNER (head-side) face
-    # so the rod + tube ride OUTSIDE the band. Sleek + low-profile. The band's prongs drop
-    # into a RECESS in its inner face; a short COVER (grip region only) lets the band sweep out
-    # cleanly above. Z values are relative to the barrel mid (z=0).
-    slider_clamp_width: float = 44.0       # SET  lozenge length (X) — band width + rounded ends
-    slider_clamp_height: float = 22.0      # SET  lozenge height (Z)
-    slider_clamp_corner_r: float = 9.0     # SET  lozenge corner radius (the rounded ends)
-    slider_clamp_bevel: float = 2.0        # SET  perimeter bevel inner→outer face (the sleek "angle")
-    slider_clamp_bevel_head: float = 3.0   # SET  HEAD-side relief: the inner (-Y) face is INSET this much so its
-                                           #   perimeter RECEDES from the temple (eased pillow, not a proud square
-                                           #   lip). Widest section sits this far behind the contact face. Ergo pass.
-    slider_clamp_standoff: float = 6.0     # SET  lozenge depth (Y) proud of the barrel; hosts the inserts
-    slider_clamp_z_lo: float = -6.0        # SET  recess/cover bottom Z (holds the prong tip)
-    slider_clamp_hole_z: float = 0.0       # SET  Z of the 2 bolt inserts (= prong-tip holes)
-    slider_clamp_rib_z: float = 1.5        # SET  Z of the anti-rotation rib (in the channel)
-    slider_clamp_rib_height: float = 3.0   # SET  rib Z extent (short — registers, doesn't block the exit)
-    slider_clamp_rib_depth: float = 3.0    # SET  rib protrusion into the channel (−Y past the recess floor)
-    slider_clamp_cover_thickness: float = 5.0  # SET  inner cover (RETAINING BLOCK) plate thickness — 3→5
-                                               #   so the 2 band screws get RECESSED (counterbored) heads.
-    slider_clamp_cover_margin: float = 2.0     # SET  how much SMALLER than the lozenge the cover is per side
-                                               #   (was a flat −6 width / grip-only height). ~0 → matches the
-                                               #   lozenge perimeter so it grips the band over the full block.
-    slider_clamp_cbore_diameter: float = 6.2   # SET  counterbore for the M3 socket head (~5.5) + clearance
-    slider_clamp_cbore_depth: float = 2.6      # SET  head sinks this far below the cover's outer (head) face
-    # Finger SCALLOPS — a shallow concave dish down each of the lozenge's ±X (front/back) ENDS
-    # so the hand has a DEFINED pinch to slide the block up/down on the post (the adjust motion).
-    # Vertical channels, outboard of the inserts (x=±13) and recess (x=±17), so gate-neutral.
-    slider_grip_scallop_r: float = 6.0     # SET  scallop cutter radius (sets dish width)
-    slider_grip_scallop_depth: float = 1.2 # SET  how deep the dish bites the end face (subtle, not a hole)
-    slider_clamp_cover_ease: float = 1.2   # SET  the cover (first thing to touch the head) drafts inward this much
-                                           #   on its head-side face → a soft central crown, rim off the skin. Ergo pass.
+    # ---- Height adjustment mechanism — DELETED 2026-08-07, DELIBERATELY EMPTY -----
+    #
+    # There is no mechanism here, and that is the honest state of the design.
+    #
+    # What was here: the Grado HP1000-style clamp collar + side THUMBSCREW + pressure
+    # shoe + bow cover plate. All Daily Driver's, all inherited through the fork, and
+    # all DELETED BY DECISION IN AUGUST — §4b: the printed cantilever leaf + detent
+    # ladder "deletes the thumbscrew, the insert and the pressure shoe in one move."
+    #
+    # It survived because the decision was never propagated, and it kept regenerating:
+    # a design pass on 2026-08-07 read these parameters — because this file is declared
+    # the source of truth — and faithfully drew the thumbscrew back in. A dead mechanism
+    # in the authoritative file does not sit quietly.
+    #
+    # WHAT REPLACES IT IS AN OPEN QUESTION, not a pending implementation:
+    #   • a printed cantilever leaf riding a detent ladder (§4b's answer, never drawn), or
+    #   • no height adjustment at all — discrete positions, or a compliant suspension layer.
+    # The second is live because the first is the hardest unsolved item in the build.
+    #
+    # Do not add parameters here to make something build.
+
+    # ---- Assembly POSE references — NOT a mechanism -------------------------
+    # The worn-pose solve still has to put the band SOMEWHERE relative to the yoke post,
+    # and until the height-adjustment mechanism is designed that placement is an
+    # assumption, not a dimension. These two carry the numbers the old clamp collar used
+    # to imply, so the pose keeps working without pretending a mechanism exists.
+    # They describe a DRAWING, not a part. Delete them when the mechanism lands.
+    assembly_band_offset_y: float = -10.8   # POSE ONLY  band plane offset from the post axis
+    assembly_band_end_margin: float = 9.0   # POSE ONLY  clearance at each end of post travel
 
     # ---- Bow (BOUGHT Beyer Metal Head Bow / DIY 1095 — INTERFACE ONLY) ------
     # Reference body for assembly + a DIY template. NOT a printed part. The first

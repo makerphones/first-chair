@@ -23,13 +23,11 @@ from params import P
 from parts.cup import make_cup
 from parts.baffle import make_baffle
 from parts.yoke import make_yoke
-from parts.slider import make_slider
 from parts.bow import make_bow
 from parts.headband_pad import make_headband_pad
 from parts.driver import make_driver
 from parts.driver_clamp import make_driver_clamp
 from parts.earpad import make_earpad
-from parts.headband_clamp import make_headband_clamp
 
 
 # Sub-assembly groups for the manual's interactive parts viewer. The node NAMES
@@ -52,8 +50,7 @@ SUBASSEMBLIES = {
                    "insert_p_R", "insert_p_L", "insert_m_R",
                    "insert_m_L", "screw_p_R", "screw_p_L", "screw_m_R", "screw_m_L"]},
         {"id": "headband", "label": "Headband",
-         "nodes": ["bow_ref", "slider_R", "slider_L", "thumbscrew_R", "thumbscrew_L",
-                   "slider_shoe_R", "slider_shoe_L", "headband_clamp_R", "headband_clamp_L"]},
+         "nodes": ["bow_ref"]},   # height-adjustment mechanism UNDESIGNED — see params
         {"id": "headband_pad", "label": "Headband pad",
          "nodes": ["headband_pad"]},
         {"id": "head", "label": "Reference head", "nodes": ["head_ref"]},
@@ -131,11 +128,11 @@ def make_assembly(worn_head: str = "m") -> cq.Assembly:
     # the bow's prong-tip hole (inset from the tip) lands on that rotated clamp hole with the band APEX
     # on the crown. seat_y = the recess-floor depth (clamp-hole x-offset from the post centre).
     L = P.bow_developed_length
-    seat_y = (-P.slider_collar_diameter / 2 - P.slider_clamp_standoff) + (P.bow_thickness + 0.4)
+    seat_y = P.assembly_band_offset_y + (P.bow_thickness + 0.4)
     post_top = P.yoke_fork_height + 4 + P.yoke_post_length
     post_base = P.yoke_fork_height + 4                      # hub top = the barrel's bottom stop
-    sz_hi = post_top - P.slider_collar_height / 2           # barrel at the post top (extended)
-    sz_lo = post_base + P.slider_collar_height / 2          # barrel at the hub (retracted)
+    sz_hi = post_top - P.assembly_band_end_margin           # barrel at the post top (extended)
+    sz_lo = post_base + P.assembly_band_end_margin          # barrel at the hub (retracted)
 
     def _R_of_psi(psi_deg):
         return L * 90.0 / (math.pi * (90.0 - psi_deg))
@@ -204,13 +201,6 @@ def make_assembly(worn_head: str = "m") -> cq.Assembly:
     # post, head is the top stop. Built from z=0 = the shoulder seat (boss top); ride with the yoke.
     from parts.yoke_rod import make_yoke_rod
     rod = tilt(T_yoke(make_yoke_rod().translate((0, 0, P.yoke_fork_height + 4))))
-    # Slider rides the (tilted) post at slider_z (the height, solved above); the post slides + swivels
-    # the full barrel height. slider_z = the clamp/barrel centre along the tilted post.
-    slider = tilt(T_yoke(make_slider().translate((0, 0, slider_z))))
-    # Pressure SHOE — rides in the slider's +Y pocket, saddle cradling the post (the thumbscrew
-    # presses it, not the post). Built at the origin, shifted +Y so its saddle is post-coaxial.
-    from parts.slider_shoe import make_slider_shoe, shoe_offset_y
-    shoe = tilt(T_yoke(make_slider_shoe().translate((0, shoe_offset_y(), slider_z))))
 
     # ---- Shared headband: bow + crown pad, a PURE ARC arcing between the two sliders ----
     # The bow is symmetric about x=0 (apex on the crown). Its end tangent already matches the post
@@ -221,14 +211,11 @@ def make_assembly(worn_head: str = "m") -> cq.Assembly:
     bow_xf = (0, 0, Hz - zh)
     bow = _bow0.translate(bow_xf)                            # the flexed bow, posed
     pad = make_headband_pad(radius=R_worn, arc_degrees=arc_worn).translate(bow_xf)
-    # Headband CLAMP cover (INNER head-side piece) — built in the slider frame, posed (tilted) with
-    # the slider so its bolts/slot align with the slider's clamp.
-    cover = tilt(T_yoke(make_headband_clamp().translate((0, 0, slider_z))))
 
     asm = cq.Assembly(name="first_chair")
     for nm, solid, col in (("cup", cup, CHARCOAL), ("baffle", baffle, ORANGE),
                            ("driver", driver, DRIVER_C), ("driver_clamp", driver_clamp, STEEL),
-                           ("yoke", yoke, YOKE_C), ("slider", slider, SLIDER_C)):
+                           ("yoke", yoke, YOKE_C)):
         asm.add(solid, name=f"{nm}_R", color=col)
         asm.add(mirror_L(solid), name=f"{nm}_L", color=col)
 
@@ -244,10 +231,6 @@ def make_assembly(worn_head: str = "m") -> cq.Assembly:
     asm.add(pad, name="headband_pad", color=PAD_C)         # shared crown cushion
     asm.add(earpad, name="earpad_R", color=PAD_C)          # round pad mockup (bring your own)
     asm.add(mirror_L(earpad), name="earpad_L", color=PAD_C)
-    asm.add(cover, name="headband_clamp_R", color=SLIDER_C)   # outer clamp plate
-    asm.add(mirror_L(cover), name="headband_clamp_L", color=SLIDER_C)
-    asm.add(shoe, name="slider_shoe_R", color=ORANGE)         # pressure pad (screw → shoe → post)
-    asm.add(mirror_L(shoe), name="slider_shoe_L", color=ORANGE)
 
     # ACOUSTIC soft goods (VIZ) — shown so the damping + seal interfaces READ (internal; isolate or
     # explode to see them). Built in the cup/baffle local frame, posed with the cup (T_cup):
