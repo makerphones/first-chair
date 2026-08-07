@@ -118,3 +118,46 @@ If it still feels insufficient, the better answer is a **3-start coarse thread**
 rotation, more screw-like in the hand, and it still solves the orientation problem — it
 lands in one of **three** defined angular positions rather than anywhere at all. That is the
 real objection to a single-start thread, which stops wherever friction says.
+
+---
+
+# Section — does the front piece hold the driver?
+
+`design/form/section.py` → `_section.png`. **Yes, comfortably, for a dynamic.**
+
+```
+ear ──5.5── cup face ──3.5── driver flange ──5.0── driver back ──3.5/4.5── split
+            (worn pad)        (dome+excursion 2.0 forward of the flange)
+```
+
+| | split | front cavity | behind the driver |
+|---|---|---|---|
+| `taper_soft` | 13.0 | 7.0 mm | **4.5 mm** |
+| `taper_mid` | 12.0 | 7.0 mm | **3.5 mm** |
+
+**Front cavity 7.0 mm** — the gap from the excursing dome to the ear. That is the number
+that sets tonality, and it is mostly the pad: change flats for bowls and it moves several mm.
+
+The driver flange sits **3.5 mm** back from the cup face. That is a *design* choice, not a
+constraint — pushing it back trades front cavity for tail room 1:1.
+
+## Where the planar breaks it
+
+Maker: *planars are thicker, with a nipple on the front, so they need more space and a
+different mounting ring.* That is exactly what the budget shows.
+
+A dynamic spends **2.0 mm forward** of the flange and **5.0 mm behind**. Push either and the
+front piece has to grow, because the split can only move back so far before the rear cup
+stops being the acoustic part:
+
+```
+front piece depth needed ≈ DRV_SEAT + basket + 3 mm of mounting structure
+```
+
+At a plausible planar — say 9 mm body with a 3 mm front nipple — the seat has to move back
+to 4.5+ and the basket needs 9, so the split lands near **17 mm**. The current 12–13 does not
+hold it.
+
+**Those planar numbers are invented.** What is needed is one caliper session on a real
+planar: body depth, front protrusion, flange OD, mounting hole pattern. Then this drawing
+answers it properly instead of plausibly. Adjust `DRV_*` at the top of `section.py` and re-run.
