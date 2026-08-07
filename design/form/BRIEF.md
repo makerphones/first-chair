@@ -7,42 +7,60 @@ the reference folder next to this file is my own prior work.
 ## The order — we are at step 1
 
 ```
-1. FORM — surfaced, no engineering            ← this pass. judge it as an OBJECT
+1. FORM — resolved ID, no engineering         ← this pass. judge it as an OBJECT
 2. split that form into parts                ← serviceability + printability enter here
 3. details: grille, mark, fasteners, joints
 4. I re-author it as engineered CAD, by hand
 ```
 
-Getting this backwards is what went wrong on earlier attempts: asking for parts first produces
-primitives butted together, every junction an abutment, nothing flowing into anything. That
-reads as clunky no matter how good the proportions are.
+Getting this backwards is what went wrong on earlier attempts: asking for **printable parts**
+first produces primitives butted together, every junction an abutment, nothing flowing into
+anything. That reads as clunky no matter how good the proportions are. Design the object, then
+cut it into parts — not the other way round.
 
-## This pass: surfaced, not assembled
+## This pass: resolved industrial design, not engineered assembly
 
-**The target is a product visualisation, not a blob.** The pad is there. The cup is there. The
-yoke and the band are there, in their own materials. It should read as a headphone you could
-photograph — that is exactly what the industrial-design firm delivered on my previous product,
-and it's the level I want back.
+**Target: a headphone you could photograph.** I'm attaching renders from the industrial-design
+firm that did my previous product — that is the resolution and the language I want back.
 
-What is **not** there is engineering: no bosses, no fasteners, no screw holes, no grille
-lattice, no clamp ring, no part-split lines. Those hadn't been designed yet when that render
-was made, and they haven't here either.
+Parts **are** parts. You can see the bezel, the face panel, the yoke, the band, the pad. They
+are distinct, in distinct materials. They are simply *resolved* — flowing surfaces, not
+primitives butted together.
 
-So the distinction is **surfaced, not assembled**:
+What is **not** there is engineering: no fasteners, no screw bosses, no heat-set inserts, no
+grille lattice, no clamp ring, no print-split lines. None of that had been designed when those
+renders were made, and none of it belongs in this pass.
+
+### The house language, from those renders
+
+- A **proud polished bezel ring framing a recessed matte face panel**, with the mark centred on
+  it. **Concentric rings are the dominant motif.**
+- A **flat blade yoke** that arcs down the *outside* of the cup, hugging its edge and
+  terminating in a small pivot boss at the front. No bracket, no fork.
+- A **flat strap band**, punctuated by polished metal collars at the adjustment points.
+- **Four materials do all the separating** — polished metal, wood, leather, foam. There are no
+  part lines because the material changes *are* the lines.
+
+**What transfers and what doesn't.** That cup is a **teardrop** because it is a circumaural
+with a bespoke pad. First Chair is **round** because a commodity Grado pad sets it. The
+*language* transfers across the family; the *outline* does not — see the table below.
+
+Vary the three directions **within** this vocabulary. I'm not looking for three unrelated
+styles; I'm looking for three ways this language lands across four differently-sized,
+differently-padded products.
+
+### How to build it
 
 - **Build each part from a profile, lofted or swept — not a stack of primitives.** If a section
   changes, it changes *through* the loft. If something is round, the roundness lives in the
   profile curve.
-- **Where parts meet, the surfaces relate.** A cup that flows into its arm, not a cylinder with
-  a bracket abutted to it. Look at the waisted stem in the shape sketches: the arm narrows and
-  flares into the cup as one move.
-- **Materials do the separating**, not part lines. Printed shell, foam pad, steel band — let
-  those read, the way they do in that render.
+- **Where parts meet, the surfaces relate.** A yoke blade that follows the cup's curve, not a
+  bracket abutted to a cylinder. The waisted stem in my shape sketches is the same move.
 
-This also plays to what you can do: with no boolean operations you can't cut features into a
-body anyway, so lofted surfaces are your strongest mode and butted primitives your weakest. And
-it sets up step 2 — **when a form is defined by a profile, splitting it into parts is a split
-of the profile, not a boolean.**
+This plays to what you can do: with no boolean operations you can't cut features into a body
+anyway, so lofted surfaces are your strongest mode and butted primitives your weakest. And it
+sets up step 2 — **when a form is defined by a profile, splitting it into printable parts is a
+split of the profile, not a boolean.**
 
 ## Read first
 
@@ -121,9 +139,9 @@ Everything else lives in `params.py`.
 
 ## What I want back
 
-**The four products at true relative scale**, each surfaced as above — cup, pad, yoke, band, in
-their materials. Three directions to choose between. One page, one live 3D stage, nav switches
-between them.
+**The four products at true relative scale**, each resolved as above — bezel, face, pad, yoke,
+band, in their materials. Three directions **within the house language**, not three unrelated
+styles. One page, one live 3D stage, nav switches between them.
 
 Rule stated in words **before** you model. One line per direction on what doesn't close — those
 have been the most useful things you've produced.
