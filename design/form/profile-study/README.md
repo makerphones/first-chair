@@ -73,3 +73,48 @@ reads as a seam.
 - **Screws** — positive and serviceable, but reintroduces bosses, inserts and hardware, and
   works against the *"only parts not printed are ___"* sentence.
 - **Glue** — kills serviceability. Against the standing tie-breaker: the user is a tweaker.
+
+---
+
+# Straight front + tapering back
+
+Maker on `waist_split`: *"it looks like a yoyo."* Correct, and not a rendering error — that
+profile swells, pinches, then **flares back out**. Wide-narrow-wide is a yoyo.
+
+The read was *"the base of the one on the left, with the back of the other one but flipped"*:
+straight front, then mass falling **away** from the head instead of bulging back out.
+`_contact-taper.png`, three rates:
+
+| | straight to | back face | depth | PETG |
+|---|---|---|---|---|
+| `taper_soft` | 13.0 | Ø35 | 25.0 | 10.3 g |
+| `taper_mid` | 12.0 | Ø29 | 24.0 | 9.1 g |
+| `taper_hard` | 11.0 | Ø22 | 22.5 | 7.8 g |
+
+The straight section is also the split zone — which is the point. Parting on a cylinder
+means both mating faces are the same diameter, so the joint is a simple round fit rather
+than something that has to follow a curve.
+
+## The parting line: shadow gap, not chamfer
+
+A chamfer at the joint is a bad print — on whichever part has it facing down it is a
+first-layer overhang. A **shadow gap** is a pure diameter step: the rear cup steps down
+0.6–1.2 mm for ~2 mm above the joint. Zero overhang on both parts, prints trivially, and it
+does three jobs at once:
+
+1. reads as intentional rather than as a seam
+2. **hides tolerance mismatch** — a flush joint shows every 0.1 mm of print variation, a
+   recessed one shows none
+3. gives a fingernail purchase for opening it
+
+0.6 mm is a line. 1.2 mm is a feature. Both print; the choice is taste.
+
+## On the bayonet — quarter turn is probably enough, and here is the alternative
+
+A bayonet's retention is the **lug ramp and detent**, not the rotation angle. Three lugs at
+120° need only ~60–90° to engage, and load is shared three ways.
+
+If it still feels insufficient, the better answer is a **3-start coarse thread**: ~120° of
+rotation, more screw-like in the hand, and it still solves the orientation problem — it
+lands in one of **three** defined angular positions rather than anywhere at all. That is the
+real objection to a single-start thread, which stops wherever friction says.

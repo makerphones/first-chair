@@ -57,6 +57,19 @@ PROFILES = {
     "shallow": [(0, 0), (R_RIM, 0), (R_RIM, LIP), (R_BODY, LIP),
                 (R_BODY, 18.0), (22.5, 21.6), (0, 21.6)],
 
+    # STRAIGHT FRONT + TAPERING BACK — the maker's read: the base of `shallow` with the
+    # back of `waist_split` flipped, so mass falls AWAY from the head instead of bulging
+    # back out. Three taper rates; the straight section is where the part splits.
+    "taper_soft": ([(0, 0), (R_RIM, 0), (R_RIM, LIP), (R_BODY, LIP), (R_BODY, 13.0)]
+                   + [(R_BODY - 6.5 * (t ** 1.5), 13.0 + t * 12.0)
+                      for t in [i / 14 for i in range(1, 15)]] + [(0, 25.0)]),
+    "taper_mid": ([(0, 0), (R_RIM, 0), (R_RIM, LIP), (R_BODY, LIP), (R_BODY, 12.0)]
+                  + [(R_BODY - 9.5 * (t ** 1.35), 12.0 + t * 12.0)
+                     for t in [i / 14 for i in range(1, 15)]] + [(0, 24.0)]),
+    "taper_hard": ([(0, 0), (R_RIM, 0), (R_RIM, LIP), (R_BODY, LIP), (R_BODY, 11.0)]
+                   + [(R_BODY - 13.0 * (t ** 1.25), 11.0 + t * 11.5)
+                      for t in [i / 14 for i in range(1, 15)]] + [(0, 22.5)]),
+
     # Bell — one continuous curve from the lip to a small back face.
     "bell": ([(0, 0), (R_RIM, 0), (R_RIM, LIP), (R_BODY, LIP)]
              + [(R_BODY * math.cos(t * math.pi / 2) ** 0.42 + 1e-3, LIP + t * (26.0 - LIP))
