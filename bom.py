@@ -62,10 +62,16 @@ def bom_rows():
          "Ø39.5 frame / ≤6 mm deep MEASURED; dome proud/excursion = common-40 mm ASSUMPTION until test "
          "drivers measured (drives baffle hub depth)",
          "Kingstate — maker-supplied (measure Fs/Qts/Z + dome/excursion when bench-testing)", "~$8–18", "MAKER"),
-        ("Ear pads — Beyerdynamic DT 770/880/990 family (DEFAULT)", "1 pair",
-         "OD ~100 / opening ~58 / depth ~22–25 mm, elastic stretch-ring mount",
-         "Beyerdynamic EDT-series — maker-supplied; Dekoni / Brainwavz interchangeable (premium/tuning)",
-         "~$25–45", "MAKER"),
+        # SUPRA-AURAL pad, not circumaural. This row said "Beyerdynamic DT 770/880/990,
+        # OD ~100 / opening ~58 / depth 22–25" — a CIRCUMAURAL pad on an ON-EAR headphone,
+        # inherited from Daily Driver at the fork and never reconciled. Same failure as the
+        # Ø91 radii and the over-ear form brief. First Chair mounts a commodity GRADO-PATTERN
+        # pad: the foam stretches over the Ø54 lip and grips the Ø48 body behind it.
+        ("Ear pads — GRADO-pattern, commodity (we design and ship none)", "1 pair",
+         f"stretches over the Ø{P.cup_outer_diameter:.0f} lip, grips the Ø{P.cup_body_diameter:.0f} body behind it; "
+         "flats ~8–10 mm, bowls thicker — the swap is the main tonal lever",
+         "genuine Grado or aftermarket (Geekria / Dekoni / YAXI et al.) — deliberately a wide field",
+         "~$10–30", "MAKER"),
 
         # --- Headband spring -----------------------------------------------------
         ("Metal head bow (spring band)", "1",
