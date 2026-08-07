@@ -9,6 +9,59 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-07 — Form before parts. We had the process backwards.
+
+Maker, after two form passes came back clunky: *"we need to not take a primitive assembly
+approach for our first pass, we need to take a more organic free flowing pass for the first
+design, then we can break them up structurally and refine the details. It seems like we're
+going about this backwards."*
+
+Right, and it is the most consequential correction of the whole exercise — bigger than any of
+the geometry ones, because it explains why the last two passes failed rather than fixing one
+instance of the failure.
+
+### What we were doing
+
+Asking for **parts** in the first form pass. So `model.js` builds the cup as stepped cylinders,
+boss cylinders stuck on the flank, box webs, 0.6 mm bevels — every junction an abutment between
+two primitives. Nothing flows into anything. That reads as clunky regardless of proportion, and
+"make it more elegant" cannot fix it, because the **construction method** is the defect.
+
+That is the *engineering* order — parts, then assembly — imported into the *form* phase.
+
+### The order, corrected
+
+```
+1. one continuous form, no parts at all      ← judge it as an OBJECT
+2. split that form into parts                ← serviceability + printability enter here
+3. details: grille, mark, fasteners, joints
+4. ENGINEER — re-author by hand in CadQuery
+```
+
+### Two reasons this is right and not just a preference
+
+**The maker's own prior product was done this way.** The archive folder is named
+`Old Faithful Surfacing Rev 1` — the industrial-design firm delivered *surfacing*, one form, as
+IGES and STEP. The part split came afterwards and came from the maker, in the design letter:
+*"we can't make the whole cup out of wood. We decided split the part in two, imagining that we
+would machine a frame out of aluminum, then attach wood cups."* Form first, split second. His
+six shape sketches are outlines — no joints, no parts, no bosses.
+
+**And it plays to the tool instead of against it.** Claude Design has no booleans and no fillet
+operator. It therefore *cannot* cut features into a body, which is why it abuts primitives —
+that is the only way it can imply parts, and it is its weakest mode. Lofts, revolves and sweeps
+are its strongest. **We had been asking it for the one thing it is worst at, then complaining
+the result looked assembled.**
+
+There is a second payoff, and it is what makes the whole pipeline viable: **if the form is
+defined as a profile, splitting it into parts at step 2 is a split of the profile — not a
+boolean.** The path stays inside the tool's ceiling instead of hitting it one step later.
+
+Recorded in `design-pipeline.md` §1 as standing process for every build, not just this one.
+`design/form/FOLLOWUP-form-first.md` is the pass.
+
+---
+
 ## 2026-08-06 — The house design language already existed. It was in a 2016 archive.
 
 The maker opened up a 179 MB archive of prior professional headphone work: the **HeadRoom

@@ -64,6 +64,32 @@ Run the family/form pass in Claude Design, seeded with the repo and the naming s
 Conventions). Ask for **the rules in words before it models anything** — proportion and rule,
 not a repeated detail; something that still works at 54 mm and at 91 mm. Then let it model.
 
+**FORM BEFORE PARTS. This order is not optional and we got it backwards first time.**
+
+```
+1. one continuous form, no parts at all      ← judge it as an OBJECT
+2. split that form into parts                ← serviceability + printability enter here
+3. details: grille, mark, fasteners, joints
+4. ENGINEER — re-author by hand in CadQuery
+```
+
+Asking for parts in step 1 produces exactly what it sounds like: primitives butted together,
+every junction an abutment, nothing flowing into anything. That reads as clunky no matter how
+good the proportions are, and no amount of "make it more elegant" fixes it, because the
+*construction method* is the problem.
+
+**It also plays to the tool.** No booleans means it cannot cut features into a body — so
+assembling primitives is the only way it can fake parts, and it is its weakest mode. A single
+lofted or swept body is its strongest. Ask for the thing it is good at.
+
+And the payoff at step 2: **if the form is defined as a profile, splitting it into parts is a
+split of the profile, not a boolean.** The whole path stays inside the tool's ceiling instead
+of hitting it one step later.
+
+This is also how the maker's own prior product was done — the industrial-design firm delivered
+*surfacing* (one form), and the part split came afterwards, from the maker, once the shape was
+agreed.
+
 Output: **a named, hierarchical, correctly-scaled GLB** — not a picture. That is the whole
 reason this replaced what came before. Run `makerphones/scripts/inspect_glb.py` on it (it is
 in the parent repo, not this one), read the part list, and
