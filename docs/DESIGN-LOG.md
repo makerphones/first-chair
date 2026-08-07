@@ -9,6 +9,117 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-06 — The house design language already existed. It was in a 2016 archive.
+
+The maker opened up a 179 MB archive of prior professional headphone work: the **HeadRoom
+Cosmic** (planar magnetic, Kickstarter-era, measured by InnerFidelity) and **Old Faithful**
+(closed-back, industrial design by Deep Blue Design and Martin Ortiz). Prototypes 1–3, cut
+spring-steel headband blanks, driver measurements, and the correspondence.
+
+Three documents in it are worth more than everything I have written for this build.
+
+### 1. The intent, in the maker's own words, 2016
+
+From the design letter to the industrial designer:
+
+> "The code name Old Faithful is chosen to represent something that lasts a lifetime and will
+> be passed down for generations. It should exude quality craftsmanship, **almost looking
+> handmade but with extreme precision**. Parts should be easily replaceable and durable.
+> Reduce weight where ever possible."
+
+Compare what I had been feeding Claude Design: *"honest engineering, pro-audio sensibility
+through a maker lens."* Mine describes a category. His states an intent with a time horizon,
+and "almost handmade but with extreme precision" is *actionable* — it tells a designer what to
+do with a tolerance, a parting line, a visible fastener. Note also "parts should be easily
+replaceable and durable": First Chair's serviceability tie-breaker, written a decade earlier.
+
+### 2. The taste rulebook, and it has not moved in ten years
+
+The Rev 2 feedback to that designer is eight corrections, and they are one position:
+
+- kill the fold hinge — *"an extra weakness we do not need"* (not "unnecessary" — a **weakness**)
+- kill the decorative step at the pad transition — *"I am assuming this is for aesthetic
+  reasons? I do not have to have this"*
+- **"There seems to be too much going on with the headband mechanism right now. We'd like to
+  simplify."**
+- and, crucially, the other half: *"we're looking to simplify without looking ugly. Hopefully
+  we can find a nice middle ground."*
+- on the yoke: *"if we don't need the extra metal, we can save weight — but it does look nice
+  and beefy"*
+- hinge pins moved 8 mm because a built prototype said so, not a drawing
+
+The third one is verbatim the note the maker gave about Claude Design's slider today. **A
+decade-stable taste position that I had been paraphrasing instead of quoting.**
+
+### 3. Placement repeatability — the Cosmic's own numbers
+
+Tyll Hertsens' raw workbook (512-point sweep, five placement positions in columns 1–10) run
+through the same placement-SD metric the brief uses:
+
+| Cosmic P3 | 20–200 Hz | 200 Hz–2 k | 2–8 kHz | 8–20 kHz |
+|---|---|---|---|---|
+| L / R | 0.10 / 0.34 | 0.29 / 0.41 | **0.77 / 0.48** | **2.02 / 1.84** |
+
+More repeatable than any of SR60x, HD 650 or RS1x in the brief's table — with a *large* pad on
+a circumaural, which is the opposite of what "prefer the smaller pad" predicts. **Not a valid
+head-to-head**: different rig, different operator, ten years apart, and the brief's own rule is
+that placement SD compares only within a session. A planar's large flat radiator also behaves
+differently from a 40 mm dynamic. Recorded as a reason to re-examine the small-pad input, not
+to overturn it.
+
+Also worth knowing: InnerFidelity published that five-position overlay on *every* measurement
+it ever made. §3's "as far as we know nobody publishes it as a design goal" survives as
+written, but there is a public corpus of hundreds of headphones measured this way on one
+consistent rig — a benchmarking asset the brief did not know it had.
+
+### 4. The bow blanks change what "ruled out" means
+
+§4b records that forming our own bow is ruled out by experiment. The photos show what actually
+failed: the **cutting is excellent** — tapered strip, Y-fork at the ear end, teardrop-terminated
+slots so the cuts cannot start cracks, holes at the tips. It was the *bend and the temper* that
+failed, with printed jigs.
+
+So the blanket "ruled out" overstates it. §4b already names "a stocked custom part made to our
+spec" as the better long-term answer — **that spec is already drawn**, in blue-tempered steel,
+on the bench. It is a sourcing conversation with a spring house, not a design problem. And the
+cut language (fork, taper, teardrop slot ends) is material-follows-load executed in steel years
+before I wrote the same principle into the yoke prompt.
+
+### 5. The shape decision — see industrial-design-brief.md
+
+Every built product in the archive is oval or teardrop; `Earcup - 07Rev B.STL` measures
+100 × 80 × 21.6. First Chair's CAD is a perfect circle **by inheritance, not by decision**.
+
+Maker's resolution, and it is better than the round-or-oval question I asked: *"We don't have
+to be so rigid in our approach, we want to design with intent for the right application."* The
+rule is the ear coverage, not the outline — circumaural follows the pinna (teardrop), supra-
+aural does not enclose it (round). First Chair stays round, now decided, and overdetermined by
+the locked round commodity pad. Full entry in the brief.
+
+Also corrected there: round is easier to **turn and mould**, not to **print**. FDM does not care
+about circle vs ellipse and there is no rotational tooling in the process — so the original
+"round is easier to manufacture" was a constraint inherited from a process we do not use.
+
+### What was deliberately not read
+
+`Dai-Ichi - HeadRoom NDA`, the Menlo NDA, and `Proposed Joint Venture Menlo and Jamey` — all
+commercial rather than design, and nothing from NDA'd supplier material can go near an
+MIT-licensed public repo. The Deep Blue and Martin Ortiz work was also commissioned from third
+parties; ownership is probably the maker's, but that is the same provenance question §5 raised
+about the forum Grado CAD and it wants confirming before any of it becomes public reference.
+
+### Not chased
+
+Maker: more design files may exist on an old PC, *"but I think they're on an old PC and maybe
+not worth digging up anyway, we need to move forward with our own design based on our current
+constraints and capabilities."* Archaeology closed.
+
+`design/form/PROMPT-04-design-language.md` carries all of this to Claude Design — the intent
+quoted rather than paraphrased, the five rules as rules, the outline rule, and an attach list
+pointing at the archive images.
+
+---
+
 ## 2026-08-06 — The form brief was never rewritten, so the CAD built a shrunken DT880
 
 Maker, looking at the published 3D viewer: *"that's not correct — this was supposed to be much

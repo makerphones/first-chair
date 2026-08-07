@@ -85,6 +85,37 @@ by month three.
 
 ---
 
+## DECIDED 2026-08-06 — the cup outline rule, and why First Chair is round
+
+Round was never chosen. It was inherited from the Daily Driver, which took it from a round
+Grado reference. The maker's own prior products — the HeadRoom Cosmic and Old Faithful — were
+**oval / teardrop**, and the archived earcup STL measures 100 × 80 × 21.6, matching the design
+letter's "fits in about 100 mm x 80 mm."
+
+**The rule is not a shape. It is: the cup outline follows the ear coverage the product needs.**
+
+- **Circumaural** cups enclose the pinna, and a pinna is a teardrop. A round over-ear either
+  pinches the ear or wastes cup volume avoiding it. Daily Driver, Session and Encore should be
+  **teardrop / oval**.
+- **Supra-aural** sits *on* the ear rather than enclosing it, so it has no outline to follow.
+  **First Chair is round** — now decided rather than assumed, and overdetermined: the commodity
+  Grado-pattern pad is round, and that interface is LOCKED.
+
+*Maker's framing: "We don't have to be so rigid in our approach, we want to design with intent
+for the right application."* The family is held together by the rule and the detail language,
+not by a repeated outline — a repeated outline across products with different jobs is the weak
+kind of family, the same failure as a repeated yoke.
+
+**Correcting the assumption that produced the original choice:** round is easier to *turn and
+mould*. It is not easier to *print* — FDM does not care whether a cross-section is a circle or
+an ellipse, and there is no rotational tooling anywhere in the process. Nor is it easier in
+CadQuery: the cup is already a loft of stacked circles, and stacked ellipses cost nothing. So
+"round because it is easier to manufacture" was a constraint inherited from a process we do not
+use — the same failure mode as the Ø91 radii, one level further out.
+
+Cost, stated: oval cups mean oval pads, so the over-ears lose the commodity pad aftermarket.
+First Chair keeps it.
+
 ## OPEN — this is what the pass is for
 
 The form language. Explicitly *not* pre-decided in this file.
