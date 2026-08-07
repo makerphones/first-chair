@@ -130,8 +130,11 @@ Specific questions the pass should answer:
 `SUBASSEMBLIES` contract**, with the `(skill + seed + prompt)` record beside it in
 `design/form/<date>/`. Run `makerphones/scripts/inspect_glb.py` on everything that arrives.
 
-The seed to hand Claude Design is `design/form/SEED.md` — it carries the constraints above in
-the form the tool needs them.
+The prompt to paste into Claude Design is **`design/form/PROMPT.md`** — self-contained, because
+**Claude Design cannot see this repo** and a prompt that says "read the brief" gets a session
+working from its own priors instead. It duplicates the constraints above on purpose; when this
+file changes, `PROMPT.md` changes with it. `design/form/SEED.md` is the how-to-run notes and
+the `(skill + seed + prompt)` record.
 
 Renders and meshes give **appearance, not manufacturable geometry**. Claude Design has no
 boolean operations, so nothing printable can originate there: the chosen direction is

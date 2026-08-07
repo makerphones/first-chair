@@ -124,6 +124,12 @@ CAD, since the CAD is already solved and illustration is a cost you pay forever.
   files, or a GitHub repo. **The reproducible unit is (skill + seed + prompt), not the prompt
   alone** — record all three or the result cannot be reproduced later. A prompt kept without
   its skill and its seed is not a record of anything.
+- **Write the prompt self-contained. It cannot see this repo.** Claude Design has no
+  filesystem access, so "read `docs/industrial-design-brief.md`" silently yields a session
+  working from its own priors — the exact failure the pass exists to fix. State every
+  constraint inline and reference no local path. Seeding from the public GitHub repo does give
+  it real access, but keep the prompt self-contained anyway: "go and read X" is a weaker
+  instruction than stating X, and it fails quietly when the seed doesn't take.
 
 The `claude-design` MCP has **no verb for the 3D agent** — that capability is driven by
 chatting in Claude Design itself, so the loop is: prompt there, download the GLB, ingest here.
