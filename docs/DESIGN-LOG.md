@@ -9,6 +9,67 @@ that product's history, not this one's.
 
 ---
 
+## 2026-08-07 — One thread, one insert. And Daily Driver isn't what we say it is.
+
+Two decisions, and the second is bigger than the first.
+
+### Fastener target: M3 inserts, M3 cap screws, M3 washers. Nothing else.
+
+I proposed dropping heat-set inserts for captured hex nuts, borrowed from Variable Openmod.
+**Maker pushed back and was right.** An insert is a small cylindrical bore; a captured nut needs
+a hex pocket, capture geometry, an access slot, and clear space *behind* the joint — and our
+baffle bosses are columns standing in the void with the bore facing forward, so there is no
+behind. Inserts also give a reusable metal thread, which the standing tie-breaker
+(serviceability — the user is a tweaker) wants over a nut that can drop out on the fourth
+teardown. *"I feel like the heat inserts will allow us to design something more elegant."*
+
+The real problem was never inserts, it was **variety**: five thread standards mixing metric and
+imperial (M3, M5, 8-32, Ø4 and Ø6 shoulder screws), three insert sizes, three install bores.
+
+**And almost all of it is one un-propagated decision.** The 8-32 insert, the 8-32 thumbscrew,
+the pressure shoe, the M5 insert and the Ø6×M5 adjustment post are every one of them part of
+the thumbscrew height-lock — the Daily Driver mechanism §4b already deletes. Propagate that and
+the BOM collapses to M3 on its own. **Fifth instance of the session's one recurring failure:** a
+decision made and never carried through. After the Ø91 radii, the DT 770 pads, the over-ear
+form brief and the closed-back variant, this is starting to look less like a series of
+oversights and more like the fork's default state.
+
+One outlier survives, and the brief already convicted it: the Ø4×M3 pivot shoulder screw sits
+below the official ISO 7379 size sheet, so suppliers brand it *"similar to"* — one of the
+original complaints against Daily Driver's BOM. If a plain M3 cap screw and a printed bushing
+can carry the tilt pivot, the build is M3 and nothing else.
+
+Recorded in `params.py`, not executed: the deletion is tangled with the slider, and whether the
+slider survives is an open question for the form pass.
+
+### Daily Driver gets redesigned, and the reason is an identity problem
+
+Maker: *"I think we need to redesign the daily driver anyway... That's too complicated for a 3D
+printed headphone, **it's not really what we say it is, it's more like a buy a bunch of parts
+and print a few** headphone, so I want to redesign it."*
+
+This is a sharper critique than the one in the brief, and a different one. The brief said Daily
+Driver's hardware was a **barrier** — *"a wall for the person the manual is trying to reach."*
+This says it is a **category error**: the product does not match its own description.
+
+The count supports it. First Chair inherited that architecture: **~17 printed pieces against
+60+ bought items across eight-plus suppliers.** Armored Soul's listing can state *"the only
+parts not 3D printed are the screws/nuts, electronics and the earpads"* and have it be true.
+Ours cannot finish that sentence in under a paragraph.
+
+So it becomes a testable design rule, now in the brief:
+
+> **"The only parts not 3D printed are ___."** If that can't be finished in a short breath, the
+> design is wrong — not merely hard. Target answer: screws, drivers, earpads, cable, and one
+> spring steel bow.
+
+**Consequence for the family: the fork direction inverts.** First Chair was forked *from* Daily
+Driver. A redesigned Daily Driver gets rebuilt *from* First Chair — which is what
+`starting-a-new-product.md` already says, and which makes the shared-kit family model load-
+bearing rather than aspirational. The kit gets designed once, here, and the over-ear inherits it.
+
+Daily Driver remains paused, not abandoned. It comes back rebuilt rather than resequenced.
+
 ## 2026-08-07 — The closed-back variant is deleted, not deferred
 
 The gate had been red on every push since the cup rebuild, on one check:

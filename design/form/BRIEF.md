@@ -36,6 +36,19 @@ production-line consumer product, or had nothing to separate parts with.
   breaks, how one part transitions into the next.
 - **Fasteners are visible and that's fine.** Deliberate, not hidden, not fetishised.
 
+### The sentence the design has to survive
+
+> **"The only parts not 3D printed are ___."**
+
+If that sentence can't be finished in a short breath, the design is wrong — not merely hard,
+*wrong*, because it stops being a 3D-printed headphone and becomes a buy-a-bunch-of-parts-and-
+print-a-few headphone. Our over-ear currently needs a paragraph: ~17 printed pieces against 60+
+bought items across eight suppliers, five thread standards, three insert sizes.
+
+The target answer is **screws, drivers, earpads, cable, and one spring steel bow.** Every
+bought item beyond that list has to argue for itself individually, and fastener *variety* costs
+as much as fastener count — **one thread, one insert size, all metric.**
+
 The intent, in the words I used with the industrial designer on my previous product:
 
 > *"It should exude quality craftsmanship, **almost looking handmade but with extreme

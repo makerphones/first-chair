@@ -224,7 +224,39 @@ class Params:
                                           #   (tighter clamp, more compact, less junction tilt) — maker's fit
                                           #   call. Capped so the boss (Ø12) clears the baffle seat (z=30).
 
-    # ---- Heat-set inserts / screws (M3) -------------------------------------
+    # ---- Heat-set inserts / screws ------------------------------------------
+    #
+    # FASTENER TARGET (2026-08-07): ONE THREAD, ONE INSERT SIZE, ALL METRIC.
+    #
+    #     M3 heat-set inserts · M3 cap screws · M3 washers. Nothing else.
+    #
+    # Heat-set inserts are KEPT, deliberately, against the alternative of captured hex
+    # nuts. An insert is a small cylindrical bore; a captured nut needs a hex pocket,
+    # capture geometry, an access slot, and clear space BEHIND the joint — and our baffle
+    # bosses are columns standing in the void with the bore facing forward, so there is no
+    # "behind". Inserts also give a reusable metal thread, which the build's tie-breaker
+    # (serviceability — the user is a tweaker) wants over a nut that can drop out on the
+    # fourth teardown.
+    #
+    # What the target removes is VARIETY, not inserts. The fork inherited FIVE thread
+    # standards mixing metric and imperial — M3, M5, 8-32, plus Ø4 and Ø6 shoulder screws —
+    # and THREE insert sizes, meaning three install bores (4.0 / 5.6 / 6.4) and three tips.
+    #
+    # Almost all of that sprawl is ONE UN-PROPAGATED DECISION. The 8-32 insert, the 8-32
+    # thumbscrew, the pressure shoe, the M5 insert and the Ø6×M5 adjustment post are all
+    # parts of the thumbscrew height-lock — the Daily Driver mechanism that this build's
+    # locked slider already deletes ("deletes the thumbscrew, the insert and the pressure
+    # shoe in one move", §4b). Propagate that and the BOM collapses to M3 on its own.
+    #
+    # ONE OUTLIER LEFT, and the brief already convicted it: the Ø4×M3 pivot shoulder screw
+    # sits below the official ISO 7379 size sheet, so every supplier brands it "similar to"
+    # — which was one of the original complaints against Daily Driver's BOM. If a plain M3
+    # cap screw plus a printed bushing can carry the tilt pivot, the whole build becomes
+    # M3 cap screws, M3 inserts, M3 washers, and nothing else.
+    #
+    # Not executed yet: the deletion is tangled with the slider, and whether the slider
+    # survives at all is an open question for the form pass. The TARGET is recorded so
+    # whatever comes back gets judged against it.
     m3_insert_hole_diameter: float = 4.0  # ESTIMATE  M3 brass insert bore
     m5_insert_hole_diameter: float = 6.4  # ESTIMATE  M5 brass heat-set install bore (fork→shoulder-screw; verify vs insert)
     m3_clearance_hole: float = 3.4        # M3 free-fit through-hole (standard)
